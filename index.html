@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 深度学习 · 基础语法 · Neural Coding Academy</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { min-height: 100vh; background: #050810; font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; color: #E2E8F0; overflow-x: hidden; }
+.header { padding: 60px 40px 40px; text-align: center; background: radial-gradient(ellipse at 50% 0%, #1a0533 0%, transparent 60%); }
+.header-label { font-size: 12px; letter-spacing: 4px; color: #7C3AED; margin-bottom: 16px; font-family: monospace; }
+h1 { font-size: clamp(30px, 5vw, 60px); font-weight: 900; line-height: 1.1; margin-bottom: 14px; background: linear-gradient(135deg, #fff 0%, #a78bfa 40%, #00D4FF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.header-sub { color: #94A3B8; font-size: 16px; max-width: 640px; margin: 0 auto 10px; line-height: 1.7; }
+.header-meta { color: #475569; font-size: 12px; font-family: monospace; }
+.container { padding: 20px 24px 40px; max-width: 1200px; margin: 0 auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.module-card { background: linear-gradient(135deg, #0F172A, #0A0F1E); border: 1px solid #1E293B; border-radius: 14px; padding: 20px; cursor: pointer; text-align: left; transition: all 0.3s ease; width: 100%; font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif; }
+.module-card:hover { transform: scale(1.01); }
+.module-card.active { transform: scale(1.02); }
+.card-emoji { font-size: 28px; margin-bottom: 10px; }
+.card-num { font-size: 10px; letter-spacing: 2px; margin-bottom: 4px; font-family: monospace; }
+.card-title { font-size: 16px; font-weight: 700; color: #F1F5F9; margin-bottom: 3px; }
+.card-subtitle { font-size: 12px; color: #64748B; }
+.card-bar { margin-top: 12px; height: 2px; transition: opacity 0.3s; }
+.detail-panel { margin-top: 18px; border-radius: 18px; overflow: hidden; display: none; }
+.detail-panel.open { display: block; }
+.panel-header { padding: 22px 26px 16px; border-bottom: 1px solid #1E293B; }
+.panel-header-inner { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.panel-emoji { font-size: 34px; }
+.panel-label { font-size: 10px; letter-spacing: 3px; margin-bottom: 3px; font-family: monospace; }
+.panel-title { font-size: 22px; color: #F1F5F9; font-weight: 700; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab-btn { padding: 9px 18px; border-radius: 9px; border: 1px solid #1E293B; background: transparent; color: #64748B; cursor: pointer; font-size: 13px; font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif; transition: all 0.2s; white-space: nowrap; }
+.tab-content { padding: 22px 26px; display: none; }
+.tab-content.active { display: block; }
+.section-label { font-size: 10px; letter-spacing: 2px; margin-bottom: 9px; font-family: monospace; }
+
+/* Concept */
+.concept-intro { font-size: 14px; color: #94A3B8; line-height: 1.9; margin-bottom: 20px; padding: 16px 18px; background: #080D18; border-radius: 10px; border: 1px solid #1E293B; }
+.concept-analogy { margin-bottom: 20px; padding: 16px 18px; border-radius: 10px; }
+.concept-analogy-title { font-size: 13px; font-weight: 700; color: #F1F5F9; margin-bottom: 7px; }
+.concept-analogy-text { font-size: 13px; color: #CBD5E1; line-height: 1.85; }
+.concept-keywords { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+.keyword-tag { padding: 4px 11px; border-radius: 18px; font-size: 11px; font-family: monospace; }
+.concept-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.concept-step { display: flex; gap: 12px; padding: 12px 15px; background: #080D18; border-radius: 9px; border: 1px solid #1E293B; align-items: flex-start; }
+.concept-step-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: monospace; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.concept-step-text { font-size: 13px; color: #CBD5E1; line-height: 1.75; }
+.concept-step-text strong { color: #F1F5F9; }
+.concept-warn { padding: 12px 16px; border-radius: 9px; border-left: 3px solid #F59E0B; background: #F59E0B11; margin-top: 4px; font-size: 12px; color: #FCD34D; line-height: 1.75; }
+.concept-warn strong { color: #FDE68A; }
+
+/* Code Examples Tab */
+.code-example-block { margin-bottom: 24px; background: #080D18; border-radius: 12px; border: 1px solid #1E293B; overflow: hidden; }
+.code-example-header { padding: 12px 16px; border-bottom: 1px solid #1E293B; display: flex; align-items: center; gap: 10px; }
+.code-example-badge { font-size: 10px; font-family: monospace; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
+.code-example-title { font-size: 13px; font-weight: 700; color: #F1F5F9; }
+.code-example-desc { font-size: 12px; color: #64748B; line-height: 1.7; padding: 10px 16px 0; }
+.code-block { padding: 14px 16px; overflow-x: auto; }
+.code-block pre { font-size: 12px; color: #E2E8F0; line-height: 1.85; font-family: 'Courier New', monospace; white-space: pre; }
+
+
+/* Deep */
+.definition-box { font-size: 14px; color: #CBD5E1; line-height: 1.85; padding: 15px 18px; background: #0A0F1E; border-radius: 9px; margin-bottom: 22px; }
+.principle-text { font-size: 13px; color: #94A3B8; line-height: 1.85; margin-bottom: 22px; }
+.logic-item { display: flex; gap: 11px; padding: 11px 14px; background: #080D18; border-radius: 7px; border: 1px solid #1E293B; margin-bottom: 7px; }
+.logic-num { font-family: monospace; font-size: 10px; min-width: 18px; margin-top: 2px; }
+.logic-text { font-size: 12px; color: #E2E8F0; line-height: 1.65; font-family: monospace; }
+
+/* Visual */
+.visual-box { padding: 20px; border-radius: 13px; margin-bottom: 16px; }
+.visual-metaphor { font-size: 14px; color: #CBD5E1; line-height: 1.9; margin-bottom: 16px; }
+.visual-scene { font-size: 15px; padding: 11px 16px; background: #0A0F1E; border-radius: 9px; text-align: center; letter-spacing: 3px; }
+.neuro-tip { padding: 16px 18px; background: #0A0F1E; border-radius: 11px; border: 1px solid #1E293B; margin-top: 12px; }
+.neuro-label { font-size: 10px; letter-spacing: 2px; color: #F59E0B; margin-bottom: 8px; font-family: monospace; }
+.neuro-text { font-size: 12px; color: #94A3B8; line-height: 1.8; }
+
+/* Practice */
+.practice-item { padding: 16px; background: #080D18; border-radius: 11px; margin-bottom: 9px; display: flex; gap: 12px; }
+.practice-badge { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: monospace; font-weight: 700; flex-shrink: 0; }
+.practice-level { font-size: 9px; margin-bottom: 4px; font-family: monospace; }
+.practice-text { font-size: 13px; color: #CBD5E1; line-height: 1.7; }
+.practice-note { padding: 12px 16px; background: #0A0F1E; border-radius: 9px; border: 1px solid #1E293B; margin-top: 7px; font-size: 11px; color: #64748B; line-height: 1.75; }
+
+/* Quiz */
+.quiz-divider { margin: 24px 0 18px; border: none; border-top: 1px solid #1E293B; }
+.quiz-header { display: flex; align-items: center; gap: 9px; margin-bottom: 16px; }
+.quiz-header-text { font-size: 10px; letter-spacing: 2px; font-family: monospace; }
+.quiz-list { display: flex; flex-direction: column; gap: 10px; }
+.quiz-item { background: #080D18; border-radius: 11px; border: 1px solid #1E293B; overflow: hidden; }
+.quiz-q { display: flex; gap: 10px; padding: 13px 15px; cursor: pointer; align-items: flex-start; }
+.quiz-q:hover { background: #0A0F1E; }
+.quiz-badge { font-size: 9px; font-family: monospace; padding: 3px 7px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+.quiz-qtext { font-size: 13px; color: #E2E8F0; line-height: 1.6; flex: 1; }
+.quiz-qtext code { font-family: monospace; font-size: 11px; background: #0F172A; padding: 1px 5px; border-radius: 3px; color: #7DD3FC; }
+.quiz-toggle { font-size: 13px; color: #475569; flex-shrink: 0; margin-top: 1px; transition: transform 0.2s; }
+.quiz-toggle.open { transform: rotate(180deg); }
+.quiz-answer { display: none; padding: 12px 15px 14px; border-top: 1px solid #1E293B; background: #050810; }
+.quiz-answer.open { display: block; }
+.quiz-answer-label { font-size: 9px; letter-spacing: 2px; font-family: monospace; margin-bottom: 7px; }
+.quiz-answer-text { font-size: 12px; color: #94A3B8; line-height: 1.8; margin-bottom: 8px; }
+.quiz-answer-code { background: #0A0F1E; border-radius: 7px; padding: 11px 13px; font-size: 11px; color: #E2E8F0; font-family: monospace; line-height: 1.8; white-space: pre-wrap; border: 1px solid #1E293B; }
+
+/* Neuro section */
+.neuro-section { padding: 10px 24px 60px; max-width: 1200px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 26px; }
+.section-header-label { font-size: 10px; letter-spacing: 4px; color: #7C3AED; margin-bottom: 10px; font-family: monospace; }
+.section-header h2 { font-size: 24px; color: #F1F5F9; }
+.neuro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px; margin-bottom: 26px; }
+.neuro-card { padding: 18px; background: linear-gradient(135deg, #0F172A, #080D18); border-radius: 13px; border: 1px solid #1E293B; }
+.neuro-icon { font-size: 24px; margin-bottom: 9px; }
+.neuro-title { font-size: 13px; font-weight: 700; color: #E2E8F0; margin-bottom: 6px; }
+.neuro-desc { font-size: 11px; color: #64748B; line-height: 1.8; }
+.schedule-box { padding: 26px; background: linear-gradient(135deg, #0F172A, #080D18); border-radius: 18px; border: 1px solid #1E293B; }
+.schedule-label { font-size: 10px; letter-spacing: 3px; color: #7C3AED; margin-bottom: 12px; font-family: monospace; }
+.schedule-box h3 { font-size: 17px; color: #F1F5F9; margin-bottom: 18px; }
+.week-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.week-item { padding: 11px 13px; background: #080D18; border-radius: 9px; }
+.week-num { font-size: 10px; font-family: monospace; margin-bottom: 3px; }
+.week-name { font-size: 12px; color: #E2E8F0; }
+.week-time { font-size: 10px; color: #475569; margin-top: 3px; }
+.schedule-note { font-size: 11px; color: #475569; line-height: 1.85; }
+.schedule-note strong { color: #94A3B8; }
+@media (max-width: 900px) {
+  .neuro-grid { grid-template-columns: repeat(2, 1fr); }
+  .week-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .neuro-grid { grid-template-columns: 1fr; }
+  .week-grid  { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">NEURAL CODING ACADEMY</div>
+  <h1>Python 深度学习 <span style="font-size:clamp(14px,2.5vw,28px);font-weight:600;background:linear-gradient(135deg,#7C3AED,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;padding:2px 10px;border:1px solid #7C3AED44;border-radius:8px;vertical-align:middle;display:inline-block;line-height:1.5">基础语法</span></h1>
+  <p class="header-sub">概念讲解 · 全量代码示例 · 底层原理 · 脑科学记忆 · 刻意练习</p>
+  <p class="header-meta">8个核心模块 · 零基础友好 · 每个用法都有代码</p>
+</div>
+
+<div class="container">
+  <div class="grid" id="moduleGrid"></div>
+  <div class="detail-panel" id="detailPanel"></div>
+</div>
+
+<div class="neuro-section">
+  <div class="section-header">
+    <div class="section-header-label">NEUROSCIENCE PROTOCOL</div>
+    <h2>脑科学强化学习协议</h2>
+  </div>
+  <div class="neuro-grid" id="neuroGrid"></div>
+  <div class="schedule-box">
+    <div class="schedule-label">OPTIMAL LEARNING SCHEDULE</div>
+    <h3>8周完整学习时间表</h3>
+    <div class="week-grid" id="weekGrid"></div>
+    <p class="schedule-note">⏰ 每天学习时段建议：<strong>上午9-11点</strong>（皮质醇峰值，专注力最强）学新知识；<strong>下午3-5点</strong>做练习；睡前30分钟只做轻量回顾（不写代码）。每周日为"费曼日"——向他人或录视频解释当周所有知识点。</p>
+  </div>
+</div>
+
+<script>
+// ─── Helper: colorize code (lightweight syntax highlight) ───────────────────
+function c(code) {
+  return code
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── Module Data ─────────────────────────────────────────────────────────────
+const modules = [
+// ════════════════════════════════════════════════════════════════ MODULE 1
+{
+  id:1, emoji:'🧬', title:'变量与数据类型', subtitle:'内存的命名与形态', color:'#00D4FF',
+  concept: {
+    intro: '在学Python之前，先想想现实中的事情：你有一个盒子，里面可以放东西，你还给这个盒子贴了一张名字标签。变量就是这张标签，数据就是盒子里的东西。Python帮你自动管理盒子，你只需要给它起名字、放东西。',
+    analogy: { title:'📦 生活类比：快递柜', text:'你在快递柜取件时，快递员先把包裹放进一个格子（内存中创建对象），再给这个格子贴你的名字（变量名）。你说"我的快递"，其实是通过名字找到格子。如果换一个新包裹给你，格子变了，名字贴到新格子上——原来的格子如果没人要，就会被清理掉（垃圾回收）。' },
+    keywords: ['变量','数据类型','整数int','浮点数float','字符串str','布尔值bool','列表list','字典dict','赋值=','类型转换'],
+    steps: [
+      { text:'<strong>起名字（变量名）：</strong>只能用字母、数字、下划线，不能以数字开头，不能用Python关键字（如if、for）。推荐有意义的名字：age比a好，student_name比sn好。' },
+      { text:'<strong>放东西（赋值）：</strong>用 = 号。注意这里的=不是数学等号，而是"把右边的值交给左边的名字"。age = 18 意思是让"age"这个名字指向数值18。' },
+      { text:'<strong>东西的种类（数据类型）：</strong>整数int(1,2,100)，小数float(3.14)，文字str(要加引号)，真假bool(True/False)，列表list([1,2,3])，字典dict({"key":"value"})。' },
+      { text:'<strong>查看与转换类型：</strong>type()查看类型；int()、float()、str()做类型转换。字符串"42"不能做数字加法（"42"+"42"得到"4242"字符串拼接，而非数字相加），int("42")+int("42")才能得到84。' }
+    ],
+    warn: '<strong>新手常犯错误：</strong>① 字符串不加引号 name=小明 会报错，要 name="小明" ② =赋值 ==比较，混用会出bug ③ 整数+字符串会报错，要先转换类型'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'四种基本数据类型',
+      desc:'Python最常用的四种类型：整数、浮点数、字符串、布尔值。每种类型有不同的用途和行为。',
+      code:
+`# ── 整数 int ──────────────────────────────
+age = 25
+year = 2024
+negative = -10
+big_num = 1_000_000    # 下划线分隔，更易读
+
+# ── 浮点数 float ──────────────────────────
+height = 1.75
+pi = 3.14159
+scientific = 1.5e3     # 科学记数法 = 1500.0
+
+# ── 字符串 str ────────────────────────────
+name = 'Alice'
+greeting = "你好世界"
+multiline = """
+第一行
+第二行
+"""                    # 三引号支持多行
+
+# ── 布尔值 bool ───────────────────────────
+is_student = True
+has_job = False
+
+# 查看类型
+print(type(age))       # <class 'int'>
+print(type(pi))        # <class 'float'>
+print(type(name))      # <class 'str'>
+print(type(is_student))# <class 'bool'>
+
+# bool其实是int的子类！
+print(True + True)     # 2
+print(True * 5)        # 5`
+    },
+    {
+      level:'基础', title:'字符串的所有常用操作',
+      desc:'字符串是最常用的类型，有非常丰富的内置方法。掌握这些方法可以处理90%的文本任务。',
+      code:
+`s = "Hello, Python World!"
+
+# ── 基本操作 ──────────────────────────────
+print(len(s))          # 20，字符数量
+print(s[0])            # 'H'，索引从0开始
+print(s[-1])           # '!'，负索引从末尾数
+print(s[0:5])          # 'Hello'，切片[start:end]
+print(s[7:])           # 'Python World!'，到末尾
+print(s[:5])           # 'Hello'，从开头
+print(s[::2])          # 每隔一个字符取一个
+
+# ── 大小写 ────────────────────────────────
+print(s.upper())       # 全大写
+print(s.lower())       # 全小写
+print(s.title())       # 每词首字母大写
+
+# ── 查找与替换 ────────────────────────────
+print(s.find('Python')) # 7，返回索引，找不到返回-1
+print('Python' in s)   # True，是否包含
+print(s.replace('World', 'Universe'))
+
+# ── 分割与拼接 ────────────────────────────
+words = s.split(', ')  # 按', '分割成列表
+print(words)           # ['Hello', 'Python World!']
+print('-'.join(['a','b','c']))  # 'a-b-c'
+
+# ── 去空格 ────────────────────────────────
+messy = "  hello  "
+print(messy.strip())   # 'hello'，去两侧空格
+print(messy.lstrip())  # 'hello  '，去左侧
+print(messy.rstrip())  # '  hello'，去右侧
+
+# ── f-string（最推荐的格式化方式）─────────
+name = 'Alice'
+age = 25
+print(f"我叫{name}，今年{age}岁")
+print(f"身高{1.756:.2f}米")   # 保留2位小数
+print(f"100的二进制：{100:b}")  # 二进制表示`
+    },
+    {
+      level:'基础', title:'列表 list — 有序可变集合',
+      desc:'列表是Python最常用的数据结构，可以存放任意类型的数据，支持增删改查。',
+      code:
+`# ── 创建列表 ──────────────────────────────
+fruits = ['苹果', '香蕉', '橙子']
+mixed  = [1, 'hello', True, 3.14]  # 混合类型
+nested = [[1,2], [3,4], [5,6]]     # 嵌套列表
+empty  = []                         # 空列表
+
+# ── 访问元素 ──────────────────────────────
+print(fruits[0])       # '苹果'
+print(fruits[-1])      # '橙子'（最后一个）
+print(fruits[1:3])     # ['香蕉', '橙子']（切片）
+
+# ── 修改元素 ──────────────────────────────
+fruits[0] = '草莓'     # 直接赋值修改
+print(fruits)          # ['草莓', '香蕉', '橙子']
+
+# ── 增加元素 ──────────────────────────────
+fruits.append('葡萄')          # 末尾加一个
+fruits.insert(1, '西瓜')       # 在索引1处插入
+fruits.extend(['芒果', '榴莲']) # 末尾加多个
+
+# ── 删除元素 ──────────────────────────────
+fruits.remove('西瓜')  # 按值删除
+popped = fruits.pop()  # 删除并返回最后一个
+del fruits[0]          # 按索引删除
+
+# ── 排序与统计 ────────────────────────────
+nums = [3,1,4,1,5,9,2,6]
+nums.sort()            # 原地升序排序
+print(nums)            # [1,1,2,3,4,5,6,9]
+print(sorted(nums, reverse=True))  # 降序，不改原列表
+print(nums.count(1))   # 1出现2次
+print(nums.index(4))   # 4在索引3
+
+# ── 列表推导式（重要！）────────────────────
+squares = [x**2 for x in range(1,6)]
+print(squares)         # [1, 4, 9, 16, 25]
+evens = [x for x in range(20) if x % 2 == 0]
+print(evens)           # [0,2,4,6,8,10,12,14,16,18]`
+    },
+    {
+      level:'中级', title:'字典 dict — 键值对映射',
+      desc:'字典是键值对的集合，通过键快速找值。Python里最重要的数据结构之一，用于表示结构化数据。',
+      code:
+`# ── 创建字典 ──────────────────────────────
+person = {'name': '小明', 'age': 25, 'city': '北京'}
+empty  = {}
+from_keys = dict.fromkeys(['a','b','c'], 0) # {'a':0,'b':0,'c':0}
+
+# ── 访问值 ────────────────────────────────
+print(person['name'])         # '小明'
+print(person.get('age'))      # 25
+print(person.get('email', '无')) # 键不存在返回默认值'无'
+
+# ── 增加/修改 ─────────────────────────────
+person['email'] = 'xm@example.com'  # 新增
+person['age'] = 26                   # 修改
+person.update({'city':'上海', 'job':'工程师'}) # 批量更新
+
+# ── 删除 ──────────────────────────────────
+del person['email']          # 按键删除
+age = person.pop('age')      # 删除并返回值
+print(age)                   # 26
+
+# ── 遍历 ──────────────────────────────────
+for key in person:
+    print(key, '->', person[key])
+
+for key, value in person.items():  # 同时拿key和value
+    print(f'{key}: {value}')
+
+print(list(person.keys()))    # 所有键
+print(list(person.values()))  # 所有值
+
+# ── 字典推导式 ────────────────────────────
+squares = {x: x**2 for x in range(1,6)}
+print(squares)  # {1:1, 2:4, 3:9, 4:16, 5:25}
+
+# ── 嵌套字典 ──────────────────────────────
+students = {
+  'Alice': {'score': 95, 'grade': 'A'},
+  'Bob':   {'score': 78, 'grade': 'B'},
+}
+print(students['Alice']['score'])  # 95`
+    },
+    {
+      level:'中级', title:'类型转换与可变性陷阱',
+      desc:'类型转换是日常操作，而可变/不可变的区别是Python中最重要也最容易踩坑的概念。',
+      code:
+`# ── 类型转换 ──────────────────────────────
+print(int('42'))        # 42  字符串→整数
+print(float('3.14'))    # 3.14
+print(str(100))         # '100' 整数→字符串
+print(bool(0))          # False（0、""、[]、None都是False）
+print(bool(42))         # True
+print(list('hello'))    # ['h','e','l','l','o']
+print(tuple([1,2,3]))   # (1, 2, 3)
+
+# ── 不可变 vs 可变 ────────────────────────
+# 不可变类型：int, float, str, tuple
+# 修改后会创建新对象，原对象不变
+x = 'hello'
+y = x
+x = x.upper()    # 创建了新字符串，x指向新的
+print(y)         # 'hello'，y没有变
+
+# 可变类型：list, dict, set
+# 修改的是同一个对象！
+a = [1, 2, 3]
+b = a            # b和a指向同一个列表！
+a.append(4)
+print(b)         # [1, 2, 3, 4]，b也变了！
+
+# 如何真正复制列表
+c = a.copy()     # 浅拷贝
+d = a[:]         # 切片也是浅拷贝
+import copy
+e = copy.deepcopy(a)  # 深拷贝（嵌套列表必须用这个）
+
+# ── 验证内存地址 ───────────────────────────
+x = 5
+y = 5
+print(id(x) == id(y))  # True，小整数缓存（-5到256）
+x = 1000
+y = 1000
+print(id(x) == id(y))  # False，大整数不缓存`
+    },
+    {
+      level:'进阶', title:'集合 set 与元组 tuple',
+      desc:'集合用于去重和集合运算；元组是不可变的列表，常用于多返回值和不应被修改的数据。',
+      code:
+`# ══ 集合 set ══════════════════════════════
+# 特点：无序、不重复、可变
+fruits = {'苹果', '香蕉', '苹果', '橙子'}
+print(fruits)          # {'苹果', '香蕉', '橙子'}（自动去重）
+
+# 去重列表的最快方式
+nums = [1,2,2,3,3,3,4]
+unique = list(set(nums))
+
+# 集合运算
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a | b)           # {1,2,3,4,5,6} 并集
+print(a & b)           # {3,4}          交集
+print(a - b)           # {1,2}          差集（a有b没有）
+print(a ^ b)           # {1,2,5,6}      对称差集
+
+# 增删元素
+a.add(10)
+a.discard(1)           # 删除，不存在不报错
+a.remove(2)            # 删除，不存在会报错
+
+# ══ 元组 tuple ════════════════════════════
+# 特点：有序、不可变（创建后不能修改）
+coords = (10.5, 20.3)   # 坐标，不应被修改
+rgb    = (255, 128, 0)
+single = (42,)          # 单元素元组，必须加逗号！
+
+# 元组解包（非常常用！）
+x, y = coords
+print(x, y)            # 10.5  20.3
+
+# 函数返回多个值，本质是返回元组
+def min_max(lst):
+    return min(lst), max(lst)
+
+lo, hi = min_max([3,1,4,1,5,9])
+print(lo, hi)          # 1  9
+
+# 交换两个变量（利用元组解包）
+a, b = 10, 20
+a, b = b, a            # 优雅！不需要中间变量
+print(a, b)            # 20  10`
+    },
+  ],
+  definition: '变量是内存地址的别名，Python中一切皆对象——变量存储的是对象的引用，而非值本身。',
+  principle: 'Python使用引用计数 + 垃圾回收机制管理内存。id()返回对象的内存地址。小整数(-5~256)被缓存复用，字符串也有intern机制。',
+  deepLogic: ['x = 5 → Python先创建整数对象5，再让标签x指向它','y = x → y和x指向同一对象，不是复制值','x = 10 → x重新贴标签，y仍指向5','id(x) == id(y) 可验证是否同一对象'],
+  visual: { title:'🧠 空间化记忆：仓库与标签', metaphor:'把内存想象成一个巨大仓库，每个对象是箱子，变量是贴在箱子上的标签。x=5不是"把5放进x"，而是"让标签x贴到装着5的箱子上"。多个标签可以贴同一个箱子（引用）。当所有标签都撕掉，箱子才被清走（GC）。', scene:'🏭仓库 → 📦箱子(对象) → 🏷️标签(变量) → 🔗引用链' },
+  practice: ['用id()追踪5个变量的内存地址，观察小整数缓存现象','画出 a=b=c=[] 的引用关系图，然后修改a，观察b和c','实验：a=[1,2,3]; b=a; a.append(4) → b是什么？为什么？'],
+  quizzes: [
+    { diff:'基础', q:'以下哪个变量名合法？<code>2name</code> / <code>my_name</code> / <code>for</code> / <code>hello world</code>', a:'my_name 是唯一合法的。2name以数字开头；for是关键字；hello world含空格。变量名只能含字母、数字、下划线，且不以数字开头。', code:'' },
+    { diff:'基础', q:'执行后x和y分别是什么？<code>x=10; y=x; x=20</code>', a:'x是20，y是10。y=x时，y拿到了x当时指向的值10。x=20只是让x重新指向20，不影响y——y仍然指向10这个对象。', code:'x=10; y=x; x=20\nprint(x,y)  # 20 10' },
+    { diff:'进阶', q:'<code>a=[1,2,3]; b=a; a.append(4); print(b)</code> 打印什么？', a:'打印[1,2,3,4]。b=a并没有复制列表，b和a指向同一个对象。通过a修改列表，b看到的也是修改后的结果。要真正复制用 b=a.copy()。', code:'a=[1,2,3]; b=a; a.append(4)\nprint(b)  # [1,2,3,4]' },
+    { diff:'思考', q:'bool(0)、bool("")、bool([])、bool(None) 分别是什么？Python中什么叫"假值"？', a:'全部是False。Python规定：0、空字符串、空列表/字典/集合、None都是假值（Falsy）。其他绝大多数情况都是真值（Truthy）。这让if判断可以更简洁：if my_list: 等同于 if len(my_list)>0。', code:'print(bool(0))     # False\nprint(bool(""))    # False\nprint(bool([]))    # False\nprint(bool(None))  # False\nprint(bool("hi"))  # True\nprint(bool([1]))   # True' },
+    { diff:'基础', q:'<code>type(3.0) == type(3)</code> 结果是什么？如何同时判断一个值是int或float？', a:'False。3.0是float，3是int，类型不同。用isinstance(x, (int, float))可以同时检查是否为其中一种。isinstance比type==更推荐，因为它支持继承。', code:'print(type(3.0)==type(3))          # False\nprint(isinstance(3, (int,float)))   # True\nprint(isinstance(3.0, (int,float))) # True' },
+    { diff:'基础', q:'执行 <code>a, b, c = 1, 2, 3</code> 后，如何用一行代码交换a和b的值？', a:'Python支持元组解包：a, b = b, a。右边先求值（得到元组(b的值, a的值)），再同时赋给左边，不需要临时变量。', code:'a, b = 1, 2\na, b = b, a\nprint(a, b)  # 2 1\n\n# 扩展：序列解包\nx, *middle, z = [1,2,3,4,5]\nprint(x, middle, z)  # 1 [2,3,4] 5' },
+    { diff:'进阶', q:'<code>a = b = []</code> 和 <code>a = []; b = []</code> 有什么本质区别？', a:'a=b=[]让a和b指向同一个列表对象，修改a会影响b。a=[];b=[]分别创建两个独立的列表对象，互不影响。用id()可以验证：前者id(a)==id(b)，后者id(a)!=id(b)。', code:'a = b = []\na.append(1); print(b)  # [1]，同一对象！\n\na = []; b = []\na.append(1); print(b)  # []，独立对象' },
+    { diff:'进阶', q:'<code>a is b</code> 和 <code>a == b</code> 有什么区别？为什么 <code>[] is []</code> 为False但 <code>256 is 256</code> 为True？', a:'is比较对象身份（内存地址相同），==比较值相等。[]每次都新建对象所以is为False。Python对-5到256的小整数有缓存（驻留机制），同一个值复用同一对象，所以256 is 256为True。超过256就不保证了。', code:'a = [1,2]; b = [1,2]\nprint(a == b)   # True（值相等）\nprint(a is b)   # False（不同对象）\nprint(257 is 257)  # True（编译优化）但不要依赖此行为' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 2
+{
+  id:2, emoji:'🌊', title:'控制流', subtitle:'程序的时间之河', color:'#7C3AED',
+  concept: {
+    intro:'程序默认从上到下一行一行执行。但有时候需要"如果天气好就出门，否则待在家"，或者"把这件事重复做10次"。这就是控制流——让程序可以做判断和重复。',
+    analogy: { title:'🚦 生活类比：交通灯与洗碗', text:'if语句就像十字路口的交通灯——绿灯（条件为真）才走，红灯就停或走另一条路。for循环就像洗碗——有10个碗，一个一个洗，洗完所有的就结束。while循环像保安站岗——只要还在上班（条件为真），就继续巡逻，下班了（条件为假）才停。' },
+    keywords: ['if条件判断','elif','else','for循环','while循环','range()','break跳出','continue跳过','缩进4空格','match-case'],
+    steps: [
+      { text:'<strong>缩进是Python的灵魂：</strong>Python用缩进（4个空格）区分代码块。if后面的代码必须缩进，表示"这是if里面的内容"。缩进错了程序直接报错。' },
+      { text:'<strong>if 判断：</strong>格式是 if 条件: 换行缩进。条件可以是比较（> < == !=）或逻辑（and or not）。elif是"否则如果"，else是"以上都不满足时"。' },
+      { text:'<strong>for 循环：</strong>格式是 for 变量 in 序列:。常配合 range() 使用。range(5)产生0,1,2,3,4；range(1,6)产生1,2,3,4,5；range(0,10,2)产生0,2,4,6,8。' },
+      { text:'<strong>while 循环：</strong>格式是 while 条件:。只要条件为True就一直执行。必须确保循环内有东西能让条件变False，否则死循环。' }
+    ],
+    warn:'<strong>新手常犯错误：</strong>① 忘记在if/for/while末尾加冒号 : ② 缩进不一致 ③ while循环忘记更新条件变量导致死循环'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'if / elif / else 完整用法',
+      desc:'条件判断是最基础的控制流。掌握单分支、双分支、多分支和嵌套四种形式。',
+      code:
+`# ── 单分支 ────────────────────────────────
+age = 20
+if age >= 18:
+    print("成年人")     # 只有条件为真才执行
+
+# ── 双分支 ────────────────────────────────
+score = 55
+if score >= 60:
+    print("及格")
+else:
+    print("不及格")     # 条件为假时执行
+
+# ── 多分支 ────────────────────────────────
+score = 85
+if score >= 90:
+    grade = 'A'
+elif score >= 80:
+    grade = 'B'         # 这个会被执行
+elif score >= 70:
+    grade = 'C'
+elif score >= 60:
+    grade = 'D'
+else:
+    grade = 'F'
+print(grade)            # B
+
+# ── 嵌套 if ───────────────────────────────
+age = 25
+has_id = True
+if age >= 18:
+    if has_id:
+        print("可以入场")
+    else:
+        print("请出示证件")
+else:
+    print("未满18岁，谢绝入场")
+
+# ── 三元表达式（一行写if-else）────────────
+x = 10
+result = "正数" if x > 0 else "非正数"
+print(result)           # 正数
+
+# ── 条件组合 ──────────────────────────────
+age = 25
+income = 8000
+if age >= 22 and income >= 5000:
+    print("符合条件")
+if age < 18 or income < 3000:
+    print("不符合")
+if not (age < 18):
+    print("已成年")     # 等同于 age >= 18`
+    },
+    {
+      level:'基础', title:'for 循环 — 遍历一切',
+      desc:'for循环可以遍历任何可迭代对象：列表、字符串、字典、range等。掌握enumerate和zip让代码更优雅。',
+      code:
+`# ── 遍历列表 ──────────────────────────────
+fruits = ['苹果','香蕉','橙子']
+for fruit in fruits:
+    print(fruit)
+
+# ── 遍历range ──────────────────────────────
+for i in range(5):          # 0,1,2,3,4
+    print(i, end=' ')
+print()
+
+for i in range(1, 11):      # 1到10
+    print(i, end=' ')
+
+for i in range(10, 0, -1):  # 倒数10到1
+    print(i, end=' ')
+
+# ── enumerate：同时获得索引和值 ────────────
+for i, fruit in enumerate(fruits):
+    print(f"{i}: {fruit}")
+# 0: 苹果
+# 1: 香蕉
+# 2: 橙子
+
+# ── zip：同时遍历多个列表 ────────────────
+names  = ['Alice','Bob','Carol']
+scores = [95, 78, 88]
+for name, score in zip(names, scores):
+    print(f"{name}得了{score}分")
+
+# ── 遍历字符串 ────────────────────────────
+for char in "Python":
+    print(char, end='-')    # P-y-t-h-o-n-
+
+# ── 遍历字典 ──────────────────────────────
+person = {'name':'小明', 'age':25, 'city':'北京'}
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+# ── break 和 continue ─────────────────────
+for i in range(10):
+    if i == 3:
+        continue            # 跳过3
+    if i == 7:
+        break               # 遇到7退出循环
+    print(i, end=' ')       # 0 1 2 4 5 6
+
+# ── for-else（循环正常结束才执行else）──────
+for i in range(5):
+    if i == 10:
+        break
+else:
+    print("循环完整结束，没有break")`
+    },
+    {
+      level:'基础', title:'while 循环 — 条件驱动',
+      desc:'while循环在不知道循环次数时使用，只要条件为真就继续。掌握正确的终止条件是关键。',
+      code:
+`# ── 基本while ─────────────────────────────
+count = 0
+while count < 5:
+    print(count, end=' ')   # 0 1 2 3 4
+    count += 1              # 必须更新，否则死循环！
+
+# ── 用while读取输入直到合法 ───────────────
+# （实际程序中常见的模式）
+# while True:
+#     user_input = input("请输入1-10的数字：")
+#     if user_input.isdigit() and 1 <= int(user_input) <= 10:
+#         break
+#     print("输入不合法，请重试")
+
+# ── 倒计时 ────────────────────────────────
+n = 5
+while n > 0:
+    print(f"倒计时：{n}")
+    n -= 1
+print("发射！")
+
+# ── while遍历列表 ─────────────────────────
+items = [1, 2, 3, 4, 5]
+while items:                # 列表非空则继续
+    item = items.pop()      # 取出最后一个
+    print(item, end=' ')    # 5 4 3 2 1
+
+# ── 常见模式：查找 ────────────────────────
+data = [4, 7, 2, 9, 1, 5]
+target = 9
+i = 0
+found = False
+while i < len(data):
+    if data[i] == target:
+        found = True
+        break
+    i += 1
+
+if found:
+    print(f"在索引{i}找到了{target}")
+
+# ── while-else ────────────────────────────
+x = 10
+while x > 0:
+    x -= 3
+else:
+    print(f"循环结束，x={x}")  # x=-2`
+    },
+    {
+      level:'中级', title:'列表/字典/集合推导式',
+      desc:'推导式是Python最优雅的特性之一，用一行代码替代多行循环，生成新的集合。这是Pythonic写法的核心。',
+      code:
+`# ── 列表推导式 ────────────────────────────
+# 基本格式: [表达式 for 变量 in 序列]
+squares = [x**2 for x in range(1, 6)]
+print(squares)          # [1, 4, 9, 16, 25]
+
+# 带条件过滤: [表达式 for 变量 in 序列 if 条件]
+evens = [x for x in range(20) if x % 2 == 0]
+print(evens)            # [0,2,4,6,8,10,12,14,16,18]
+
+# 字符串处理
+words = ['hello', 'world', 'python']
+upper = [w.upper() for w in words]
+print(upper)            # ['HELLO', 'WORLD', 'PYTHON']
+
+# 嵌套推导式（二维列表展平）
+# 等价于：for row in matrix: for x in row: flat.append(x)
+# 应用场景：CSV多行数据合并、矩阵转一维等
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+flat = [x for row in matrix for x in row]
+print(flat)             # [1,2,3,4,5,6,7,8,9]
+
+# ── 字典推导式 ────────────────────────────
+# {键表达式: 值表达式 for 变量 in 序列}
+names  = ['Alice','Bob','Carol']
+scores = [95, 78, 88]
+grade_dict = {name: score for name, score in zip(names, scores)}
+print(grade_dict)       # {'Alice':95, 'Bob':78, 'Carol':88}
+
+# 过滤：只保留高分
+high = {k: v for k, v in grade_dict.items() if v >= 85}
+print(high)             # {'Alice':95, 'Carol':88}
+
+# ── 集合推导式 ────────────────────────────
+# {表达式 for 变量 in 序列}（自动去重）
+chars = {c.lower() for c in "Hello World" if c.isalpha()}
+print(chars)            # {'h','e','l','o','w','r','d'}
+
+# ── 对比：循环 vs 推导式 ──────────────────
+# 传统写法
+result = []
+for x in range(10):
+    if x % 2 == 0:
+        result.append(x * x)
+
+# 推导式写法（更简洁）
+result = [x*x for x in range(10) if x % 2 == 0]`
+    },
+    {
+      level:'进阶', title:'Python 3.10+ match-case 模式匹配',
+      desc:'match-case是Python 3.10引入的强大特性，类似其他语言的switch，但功能更强大，支持结构匹配。',
+      code:
+`# ── 基本用法（类似switch）────────────────
+command = 'quit'
+match command:
+    case 'quit':
+        print("退出程序")
+    case 'help':
+        print("显示帮助")
+    case 'start':
+        print("开始运行")
+    case _:                 # 默认分支（相当于else）
+        print(f"未知命令：{command}")
+
+# ── 匹配数字范围 ──────────────────────────
+score = 85
+match score:
+    case s if s >= 90:
+        print("A")
+    case s if s >= 80:
+        print("B")         # 会执行这个
+    case s if s >= 60:
+        print("C")
+    case _:
+        print("F")
+
+# ── 匹配数据结构（强大！）────────────────
+point = (0, 5)
+match point:
+    case (0, 0):
+        print("原点")
+    case (0, y):
+        print(f"Y轴上，y={y}")   # 会执行，y=5
+    case (x, 0):
+        print(f"X轴上，x={x}")
+    case (x, y):
+        print(f"点({x},{y})")
+
+# ── 匹配字典结构 ──────────────────────────
+response = {'status': 200, 'data': 'OK'}
+match response:
+    case {'status': 200, 'data': data}:
+        print(f"成功：{data}")   # 会执行
+    case {'status': 404}:
+        print("未找到")
+    case {'status': status}:
+        print(f"其他状态码：{status}")`
+    },
+  ],
+  definition: '控制流是程序执行路径的决策机制，通过条件判断与循环实现非线性执行。',
+  principle: 'Python的if/for/while在字节码层面转化为JUMP_IF指令。for循环本质是调用iter()获取迭代器，再反复调用next()直到StopIteration异常。',
+  deepLogic: ['for x in obj → 等价于 iter(obj) 再反复 next()','range()是惰性对象，不会提前生成所有数字','while的本质是"有条件的goto"','break/continue修改字节码跳转位置'],
+  visual: { title:'🧠 空间化记忆：时间之河与水坝', metaphor:'把程序执行想象成河流向前流动。if语句是分叉路口，水流选择一条路。for循环是水车——桶（迭代器）一个接一个转过去。while是旋转门——条件为真才能进下一圈。break是炸开水坝，continue是跳过当前水桶。', scene:'🏞️河流(执行) → 🚰分叉(if) → 🎡水车(for) → 🚪旋转门(while)' },
+  practice: ['手写一个不用for的迭代器：用iter()和next()模拟for循环','用while实现所有for循环效果，理解底层等价性','创建一个自定义__iter__类，让自己的对象可被for遍历'],
+  quizzes: [
+    { diff:'基础', q:'用for循环打印1到10之间所有的偶数。', a:'使用range(2,11,2)直接生成偶数序列，第三个参数是步长。', code:'for i in range(2, 11, 2):\n    print(i)' },
+    { diff:'基础', q:'下面代码有什么问题？<code>x=5; while x>0: print(x)</code>', a:'死循环！循环体内没有改变x的值，x永远大于0，程序永远停不下来。必须在循环体内加 x -= 1。', code:'x=5\nwhile x > 0:\n    print(x)\n    x -= 1  # 正确：加上这行' },
+    { diff:'进阶', q:'用列表推导式写出1-100中所有能被3整除但不能被5整除的数。', a:'在推导式里加两个条件，用and连接。', code:'result = [x for x in range(1,101) if x%3==0 and x%5!=0]\nprint(result)' },
+    { diff:'思考', q:'break和continue有什么区别？for-else中的else什么时候执行？', a:'break跳出整个循环；continue跳过本次循环继续下一次。for-else的else只在循环正常结束（没有触发break）时执行，常用于"搜索，找到了break，没找到在else里处理"。', code:'for i in range(5):\n    if i == 10:  # 永远不满足\n        break\nelse:\n    print("没有找到")  # 会执行' },
+    { diff:'基础', q:'<code>range(1, 10, 3)</code> 生成哪些数字？如何用range生成[10, 8, 6, 4, 2]？', a:'range(1,10,3)生成1,4,7。倒序列表用range(10,1,-2)：从10开始，到1结束（不含），步长-2，生成10,8,6,4,2。', code:'print(list(range(1,10,3)))    # [1,4,7]\nprint(list(range(10,1,-2)))   # [10,8,6,4,2]' },
+    { diff:'基础', q:'下面代码打印几行？最后一行打印什么？<br><code>for i in range(3):<br>&nbsp;&nbsp;for j in range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;if i == j: continue<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i, j)</code>', a:'打印6行。continue跳过i==j的情况（(0,0)(1,1)(2,2)共3种），3×3=9种组合减去3种=6种。打印(0,1)(0,2)(1,0)(1,2)(2,0)(2,1)，最后一行是"2 1"。', code:'for i in range(3):\n    for j in range(3):\n        if i == j: continue\n        print(i, j)  # 共6行，最后一行: 2 1' },
+    { diff:'进阶', q:'用字典推导式把 <code>["apple", "banana", "cherry"]</code> 转成 <code>{"apple":5, "banana":6, "cherry":6}</code>（key是单词，value是长度）。', a:'字典推导式格式是{k:v for k in iterable}，这里k是单词，v是len(k)。', code:'words = ["apple","banana","cherry"]\nresult = {w: len(w) for w in words}\nprint(result)  # {"apple":5,"banana":6,"cherry":6}' },
+    { diff:'进阶', q:'Python 3.10+ 的 match-case 和 if-elif 有什么优势？写一个match语句处理命令字符串。', a:'match-case支持模式匹配（结构解构、类型检查、守卫条件），不只是值比较，对复杂数据结构更简洁。但它不是简单的switch，底层会做序列匹配、映射匹配等。', code:'def handle(cmd):\n    match cmd.split():\n        case ["quit"]:\n            return "退出"\n        case ["go", direction]:\n            return f"向{direction}走"\n        case ["get", item, *rest]:\n            return f"获取{item}"\n        case _:\n            return "未知命令"\nprint(handle("go north"))  # 向north走' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 3
+{
+  id:3, emoji:'📦', title:'函数与闭包', subtitle:'打包的代码与记忆的空间', color:'#10B981',
+  concept: {
+    intro:'假设你每天早上都要做同样的事：起床、洗脸、刷牙。如果每天都要重新写一遍这些步骤，太麻烦了。函数就是把一段代码打包起来，起个名字，以后想用的时候直接叫它的名字就行。写一次，用多次。',
+    analogy: { title:'🍳 生活类比：食谱与做菜', text:'函数就像一份食谱——"番茄炒蛋"食谱写一次，每次想吃就拿出来用。食谱里可以有参数（几个鸡蛋？加多少盐？），做完可以有返回值（端出一盘菜）。你不需要知道食谱里每步的细节，只需要按参数调用它。' },
+    keywords: ['def定义','参数','默认参数','*args','**kwargs','return','lambda','闭包','nonlocal','LEGB规则'],
+    steps: [
+      { text:'<strong>定义函数：</strong>用def关键字，后面跟函数名和括号，括号里是参数，最后加冒号。函数体要缩进。定义函数不会执行它，只是"注册"了这个功能。' },
+      { text:'<strong>参数类型：</strong>普通参数按顺序传入；默认参数设置默认值（如 def f(x, n=2)）；*args收集任意多个位置参数；**kwargs收集任意多个关键字参数。' },
+      { text:'<strong>return返回值：</strong>函数的"输出"。执行到return立刻结束函数。没有return的函数返回None。可以return多个值（实际是返回一个元组）。' },
+      { text:'<strong>闭包：</strong>函数定义在另一个函数内部，且引用了外层函数的变量，就形成了闭包。闭包让内层函数"记住"了外层函数的状态，即使外层函数已经执行完毕。' }
+    ],
+    warn:'<strong>新手常犯错误：</strong>① 定义了函数但忘记调用 ② 忘记return，函数默默返回None ③ 默认参数用了可变对象（如列表），所有调用共享同一个列表，会产生bug'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'函数定义的所有参数形式',
+      desc:'Python函数的参数非常灵活。掌握五种参数形式是写出通用、优雅函数的基础。',
+      code:
+`# ── 1. 基本参数（位置参数）────────────────
+def add(a, b):
+    return a + b
+
+print(add(3, 5))        # 8
+print(add(b=5, a=3))    # 8，关键字参数可以乱序
+
+# ── 2. 默认参数 ───────────────────────────
+def greet(name, greeting='你好'):
+    return f'{greeting}，{name}！'
+
+print(greet('小明'))            # 你好，小明！
+print(greet('小红', '早上好'))  # 早上好，小红！
+
+# !! 默认参数陷阱：不要用可变对象作默认值 !!
+def bad(lst=[]):       # 危险！所有调用共享同一个列表
+    lst.append(1)
+    return lst
+
+print(bad())  # [1]
+print(bad())  # [1, 1]  ← bug！
+
+def good(lst=None):    # 正确做法
+    if lst is None:
+        lst = []
+    lst.append(1)
+    return lst
+
+# 同样的规则适用于dict、set等所有可变类型
+def bad2(data={}):     # 危险！共享同一个字典
+    data['key'] = 1
+    return data
+
+def good2(data=None):  # 用None作默认值
+    if data is None:
+        data = {}
+    data['key'] = 1
+    return data
+
+# ── 3. *args：任意多个位置参数 ────────────
+def total(*args):       # args是元组
+    print(type(args))   # <class 'tuple'>
+    return sum(args)
+
+print(total(1, 2, 3))       # 6
+print(total(1, 2, 3, 4, 5)) # 15
+
+# ── 4. **kwargs：任意多个关键字参数 ────────
+def describe(**kwargs): # kwargs是字典
+    for key, val in kwargs.items():
+        print(f'{key}: {val}')
+
+describe(name='小明', age=25, city='北京')
+
+# ── 5. 综合使用 ───────────────────────────
+def full_func(a, b, *args, key=None, **kwargs):
+    print(f'a={a}, b={b}')
+    print(f'args={args}')
+    print(f'key={key}')
+    print(f'kwargs={kwargs}')
+
+full_func(1, 2, 3, 4, key='hello', x=10, y=20)
+# a=1, b=2, args=(3,4), key=hello, kwargs={'x':10,'y':20}`
+    },
+    {
+      level:'基础', title:'函数的返回值与作用域',
+      desc:'理解return和变量作用域（LEGB规则）是写出正确函数的关键。',
+      code:
+`# ── 返回值 ────────────────────────────────
+def no_return():
+    x = 10              # 没有return
+
+print(no_return())      # None
+
+def early_return(x):
+    if x < 0:
+        return "负数"   # 提前结束函数
+    return x * 2
+
+print(early_return(-5)) # 负数
+print(early_return(3))  # 6
+
+# 返回多个值（实际是元组）
+def stats(lst):
+    return min(lst), max(lst), sum(lst)/len(lst)
+
+lo, hi, avg = stats([1,2,3,4,5])
+print(lo, hi, avg)      # 1 5 3.0
+
+# ── 作用域 LEGB ───────────────────────────
+x = '全局'              # Global
+
+def outer():
+    x = '外层'          # Enclosing
+
+    def inner():
+        x = '内层'      # Local
+        print(x)        # 内层（优先找Local）
+    inner()
+    print(x)            # 外层
+
+outer()
+print(x)                # 全局
+
+# ── global 关键字 ─────────────────────────
+count = 0
+def increment():
+    global count        # 声明要修改全局变量
+    count += 1
+
+increment()
+increment()
+print(count)            # 2
+
+# ── nonlocal 关键字 ───────────────────────
+def make_counter():
+    n = 0
+    def inner():
+        nonlocal n      # 修改外层函数的变量
+        n += 1
+        return n
+    return inner
+
+counter = make_counter()
+print(counter())        # 1
+print(counter())        # 2
+print(counter())        # 3`
+    },
+    {
+      level:'中级', title:'lambda 匿名函数',
+      desc:'lambda是单行小函数，常用于作为参数传入sort、map、filter等。适合简单的逻辑，复杂逻辑还是用def。',
+      code:
+`# ── lambda 基本语法 ───────────────────────
+# lambda 参数: 表达式（只能有一个表达式）
+square = lambda x: x ** 2
+print(square(5))        # 25
+
+add = lambda a, b: a + b
+print(add(3, 4))        # 7
+
+# ── 在sorted中使用 ───────────────────────
+students = [
+    {'name': 'Alice', 'score': 88},
+    {'name': 'Bob',   'score': 95},
+    {'name': 'Carol', 'score': 72},
+]
+
+# 按分数升序
+by_score = sorted(students, key=lambda s: s['score'])
+print(by_score[0]['name'])   # Carol（最低分）
+
+# 按分数降序
+by_score_desc = sorted(students, key=lambda s: s['score'], reverse=True)
+print(by_score_desc[0]['name'])  # Bob（最高分）
+
+# ── 在map中使用 ──────────────────────────
+nums = [1, 2, 3, 4, 5]
+doubled = list(map(lambda x: x*2, nums))
+print(doubled)          # [2, 4, 6, 8, 10]
+
+# ── 在filter中使用 ───────────────────────
+evens = list(filter(lambda x: x%2==0, nums))
+print(evens)            # [2, 4]
+
+# ── lambda vs def 的选择 ─────────────────
+# ✅ 适合用lambda：单行、一次性、作为参数传入
+nums = [1, -3, 2, -5, 4]
+print(sorted(nums, key=lambda x: abs(x)))  # 按绝对值排序
+
+# ❌ 不适合用lambda：逻辑复杂、需要复用、需要注释
+# bad：难以阅读，调试时报错也只显示"<lambda>"
+score_key = lambda x: (x['score'] if x['active'] else 0, x['name'])
+
+# good：用def代替，清晰可读
+def score_key(item):
+    base = item['score'] if item['active'] else 0
+    return (base, item['name'])  # 先按有效分数，再按名字
+
+# 对比简洁性
+key_func = lambda x: (x[1], x[0])  # lambda版：短但晦涩
+def readable_key(item):             # def版：稍长但意图清晰
+    name, score = item
+    return (score, name)
+
+data = [('Bob',85), ('Alice',90), ('Carol',85)]
+print(sorted(data, key=readable_key))`
+    },
+    {
+      level:'中级', title:'闭包的原理与实际应用',
+      desc:'闭包让函数记住它被创建时的环境。这是理解装饰器、工厂函数、回调函数的基础。',
+      code:
+`# ── 什么是闭包 ───────────────────────────
+def make_adder(n):
+    def adder(x):
+        return x + n    # adder记住了n（外层变量）
+    return adder        # 返回函数对象
+
+add5 = make_adder(5)    # make_adder执行完了，但n=5被记住
+add10 = make_adder(10)
+
+print(add5(3))          # 8   (3 + 5)
+print(add10(3))         # 13  (3 + 10)
+
+# 验证闭包
+print(add5.__closure__)                     # (<cell at ...>,)
+print(add5.__closure__[0].cell_contents)    # 5，就是被记住的n
+
+# ── 闭包实现计数器 ────────────────────────
+def make_counter(start=0):
+    count = [start]     # 用列表绕过nonlocal（旧方法）
+    def counter():
+        count[0] += 1
+        return count[0]
+    return counter
+
+# 更好的写法（Python3用nonlocal）
+def make_counter2(start=0):
+    count = start
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter
+
+c1 = make_counter2()
+c2 = make_counter2(10) # 独立的计数器，从10开始
+
+print(c1(), c1(), c1())  # 1 2 3
+print(c2(), c2())        # 11 12
+
+# ── 闭包实现乘法器工厂 ───────────────────
+def multiplier(factor):
+    return lambda x: x * factor
+
+double = multiplier(2)
+triple = multiplier(3)
+print(double(5))         # 10
+print(triple(5))         # 15
+
+# ── 闭包如何演变成装饰器 ────────────────
+# 装饰器本质就是闭包：wrapper记住了外层的func
+import functools
+def logger(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):   # wrapper是闭包，记住了func
+        print(f"调用 {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+
+@logger
+def say_hi(): print("Hi!")
+say_hi()  # 调用 say_hi → Hi!
+
+# ── 常见闭包陷阱 ──────────────────────────
+# 循环中创建闭包
+funcs = [lambda: i for i in range(5)]  # 危险！
+print([f() for f in funcs])  # [4,4,4,4,4] 全是4！
+# 因为所有lambda共享同一个i，循环结束后i=4
+
+# 修复：用默认参数捕获当前值
+funcs = [lambda i=i: i for i in range(5)]
+print([f() for f in funcs])  # [0,1,2,3,4] 正确`
+    },
+    {
+      level:'进阶', title:'函数式编程工具',
+      desc:'Python支持函数式编程风格：map、filter、reduce、偏函数等。了解这些工具让代码更简洁。',
+      code:
+`from functools import reduce, partial
+
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# ── map：对每个元素应用函数 ──────────────
+squares = list(map(lambda x: x**2, nums))
+# 等同于 [x**2 for x in nums]
+
+# ── filter：过滤满足条件的元素 ───────────
+evens = list(filter(lambda x: x%2==0, nums))
+# 等同于 [x for x in nums if x%2==0]
+
+# ── reduce：累积计算（需要导入）────────────
+product = reduce(lambda a,b: a*b, nums)
+print(product)          # 3628800 (10的阶乘)
+
+total = reduce(lambda a,b: a+b, nums, 0)
+print(total)            # 55 (1+2+...+10)
+
+# ── partial：偏函数（固定部分参数）────────
+def power(base, exp):
+    return base ** exp
+
+square  = partial(power, exp=2)   # 固定exp=2
+cube    = partial(power, exp=3)   # 固定exp=3
+
+print(square(4))        # 16
+print(cube(3))          # 27
+
+# ── 函数作为一等公民（可以传递和存储）──────
+def apply(func, lst):
+    return [func(x) for x in lst]
+
+print(apply(str.upper, ['hello','world']))
+# ['HELLO', 'WORLD']
+
+operations = {
+    'double': lambda x: x*2,
+    'square': lambda x: x**2,
+    'negate': lambda x: -x,
+}
+for name, op in operations.items():
+    print(f"{name}(5) = {op(5)}")`
+    },
+  ],
+  definition: '函数是可复用的代码块，闭包是函数+其引用的外部变量环境的组合体（函数对象记住了定义时的作用域）。',
+  principle: 'Python使用LEGB规则查找变量：Local→Enclosing→Global→Built-in。闭包通过__closure__属性存储自由变量的cell对象，实现跨作用域的状态保留。',
+  deepLogic: ['def定义时不执行，调用时才创建局部命名空间','闭包的本质：函数携带了一个"背包"（cell）','nonlocal关键字允许修改外层函数的变量','函数也是对象，可以被传递、赋值、存储'],
+  visual: { title:'🧠 空间化记忆：房间与背包', metaphor:'每次函数调用都创建一个临时房间（局部作用域），用完即销毁。闭包像一个带着背包离开房间的人——背包里装着外层变量的引用。全局作用域是大厅，任何房间都能看到。LEGB就是"先找自己口袋，再找背包，再找大厅，最后找超市（builtins）"。', scene:'🏠大厅(Global) → 🚪房间(Local) → 🎒背包(Closure) → 🏪超市(Builtins)' },
+  practice: ['写一个计数器工厂：make_counter()返回每次调用+1的函数','探索__closure__属性：打印闭包的cell_contents','用函数实现装饰器@timer，测量任意函数执行时间'],
+  quizzes: [
+    { diff:'基础', q:'写一个函数calculate_area，接受length和width，返回面积。', a:'用def定义函数，接受两个参数，用return返回两数相乘的结果。', code:'def calculate_area(length, width):\n    return length * width\n\nprint(calculate_area(5, 3))  # 15' },
+    { diff:'基础', q:'def bad(lst=[]): lst.append(1); return lst 调用两次分别输出什么？为什么？', a:'第一次[1]，第二次[1,1]。默认参数在函数定义时只创建一次，所有调用共享同一个列表对象。要用None作默认值，函数内再创建新列表。', code:'def good(lst=None):\n    if lst is None: lst = []\n    lst.append(1)\n    return lst' },
+    { diff:'进阶', q:'用闭包写一个make_power(n)，返回一个函数，将输入数字求n次方。', a:'外层函数接收n，内层函数接收x，返回x**n。内层函数通过闭包记住了n。', code:'def make_power(n):\n    def power(x):\n        return x ** n\n    return power\n\nsquare = make_power(2)\ncube   = make_power(3)\nprint(square(4))  # 16\nprint(cube(2))    # 8' },
+    { diff:'思考', q:'用lambda创建5个函数 [lambda:i for i in range(5)]，调用每个的结果是什么？如何修复？', a:'全部返回4！循环结束后i=4，所有lambda共享同一个i变量。修复：用默认参数捕获当前值 lambda i=i: i。', code:'funcs = [lambda i=i: i for i in range(5)]\nprint([f() for f in funcs])  # [0,1,2,3,4]' },
+    { diff:'基础', q:'写一个函数 <code>my_sum(*args)</code> 接受任意多个数字，返回总和。再写一个接受 <code>**kwargs</code> 打印所有键值对的函数。', a:'*args收集多余位置参数为元组，**kwargs收集多余关键字参数为字典。', code:'def my_sum(*args):\n    return sum(args)\nprint(my_sum(1,2,3,4))  # 10\n\ndef show(**kwargs):\n    for k,v in kwargs.items():\n        print(f"{k} = {v}")\nshow(name="小明", age=18)' },
+    { diff:'基础', q:'函数 <code>def divmod2(a, b): return a//b, a%b</code> 实际返回什么类型？如何用一行接收两个返回值？', a:'返回一个元组(a//b, a%b)。Python允许return多个值，自动打包为元组。用解包赋值 q, r = divmod2(17, 5) 一行接收。', code:'def divmod2(a, b):\n    return a//b, a%b\n\nq, r = divmod2(17, 5)\nprint(q, r)           # 3 2\nprint(divmod2(17,5))  # (3, 2)，元组' },
+    { diff:'进阶', q:'下面代码打印什么？为什么？如何让内层函数修改外层的 count？<br><code>def counter():<br>&nbsp;&nbsp;count=0<br>&nbsp;&nbsp;def inc(): count+=1; return count<br>&nbsp;&nbsp;return inc</code>', a:'调用inc()会报UnboundLocalError。Python认为count+=1里count是局部变量（赋值语句），但它尚未赋值。用nonlocal count声明，告诉Python count是外层变量。', code:'def counter():\n    count = 0\n    def inc():\n        nonlocal count   # 声明借用外层变量\n        count += 1\n        return count\n    return inc\nc = counter()\nprint(c(), c(), c())  # 1 2 3' },
+    { diff:'进阶', q:'解释LEGB规则，下面代码中每个x分别来自哪个作用域？<br><code>x=1; def outer(): x=2; (lambda: x)()</code>', a:'LEGB: Local（函数局部）→ Enclosing（外层函数）→ Global（模块全局）→ Built-in（内置）。lambda里的x通过E找到outer的x=2，不会去找全局的x=1。Python从最内层开始查找，找到即停止。', code:'x = 1                 # Global\ndef outer():\n    x = 2             # Enclosing\n    def inner():\n        print(x)      # 找到Enclosing的x=2\n    inner()\nouter()  # 打印 2' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 4
+{
+  id:4, emoji:'🏛️', title:'类与面向对象', subtitle:'现实世界的数字蓝图', color:'#F59E0B',
+  concept: {
+    intro:'当你的程序越来越复杂，有很多相关的数据和函数，就需要一种方式把它们组织在一起。类（Class）就是解决方案——它是一种把数据（属性）和操作数据的函数（方法）打包在一起的结构。现实中每种事物都可以建模成一个类。',
+    analogy: { title:'🚗 生活类比：汽车设计图', text:'类就像汽车的设计图纸。图纸定义了"一辆汽车应该有什么：4个轮子、1个引擎、能启动、能加速、能刹车"。根据这个模板造出来的每辆具体的汽车，就是对象（实例）。每辆车有自己的状态（颜色、速度），但都遵循同样的设计图。' },
+    keywords: ['class类','对象/实例','__init__初始化','self','实例属性','类属性','继承','多态','魔法方法','@property','@classmethod','@staticmethod'],
+    steps: [
+      { text:'<strong>定义类：</strong>用class关键字，类名首字母大写。类里面定义的函数叫方法，第一个参数必须是self。' },
+      { text:'<strong>__init__方法：</strong>创建对象时自动调用，用于设置初始属性。用self.属性名=值来定义实例属性。' },
+      { text:'<strong>self是什么：</strong>self代表"这个对象自己"。dog1.bark()调用时，Python自动把dog1传给bark的第一个参数self。' },
+      { text:'<strong>继承：</strong>子类写成class 子类名(父类名):，自动拥有父类所有方法和属性，可以新增或覆盖（重写）。' }
+    ],
+    warn:'<strong>新手常犯错误：</strong>① 定义方法时忘记写self参数 ② 方法内访问属性忘记加self ③ 混淆类（模板）和对象（具体实例）'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'类的基本结构',
+      desc:'从最简单的类开始：定义属性、实例方法，理解self和__init__的作用。',
+      code:
+`class Dog:
+    # 类属性：所有实例共享
+    species = '犬科'
+    count = 0
+
+    def __init__(self, name, age, breed):
+        # 实例属性：每个对象独有
+        self.name  = name
+        self.age   = age
+        self.breed = breed
+        Dog.count += 1          # 修改类属性
+
+    def bark(self):
+        print(f'{self.name}：汪汪！')
+
+    def introduce(self):
+        print(f'我叫{self.name}，{self.age}岁，品种：{self.breed}')
+
+    def birthday(self):
+        self.age += 1           # 修改自身属性
+        print(f'{self.name}过生日了，现在{self.age}岁')
+
+# 创建对象
+dog1 = Dog('旺财', 3, '柴犬')
+dog2 = Dog('小白', 5, '拉布拉多')
+
+dog1.bark()              # 旺财：汪汪！
+dog2.introduce()         # 我叫小白，5岁，品种：拉布拉多
+dog1.birthday()          # 旺财过生日了，现在4岁
+
+# 访问类属性
+print(Dog.species)       # 犬科
+print(Dog.count)         # 2（创建了两只狗）
+print(dog1.species)      # 犬科（实例也能访问类属性）
+
+# 动态添加属性
+dog1.color = '橙色'
+print(dog1.color)        # 橙色
+print(dog1.__dict__)     # 查看实例的所有属性`
+    },
+    {
+      level:'基础', title:'继承与方法重写',
+      desc:'继承让子类自动获得父类的功能，重写让子类定制自己的行为，super()调用父类方法。',
+      code:
+`class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return "..."
+
+    def describe(self):
+        return f"我是{self.name}，我说：{self.speak()}"
+
+class Dog(Animal):
+    def speak(self):            # 重写父类方法
+        return "汪汪！"
+
+    def fetch(self):            # 新增方法
+        return f"{self.name}去捡球了"
+
+class Cat(Animal):
+    def speak(self):            # 各自实现不同
+        return "喵喵～"
+
+class GuideDog(Dog):            # 多层继承
+    def __init__(self, name, owner):
+        super().__init__(name)  # 调用父类__init__
+        self.owner = owner
+
+    def guide(self):
+        return f"{self.name}正在引导{self.owner}"
+
+# 多态：同一个方法，不同表现
+animals = [Dog('旺财'), Cat('咪咪'), GuideDog('导盲犬', '张三')]
+for animal in animals:
+    print(animal.describe())   # 每个调用各自的speak
+
+# 继承检查
+guide = GuideDog('小黑', '李四')
+print(isinstance(guide, GuideDog))  # True
+print(isinstance(guide, Dog))       # True（是Dog的子类）
+print(isinstance(guide, Animal))    # True（是Animal的子类）
+print(isinstance(guide, Cat))       # False
+
+# 查看继承链
+print(GuideDog.__mro__)
+# (<class GuideDog>, <class Dog>, <class Animal>, <class object>)`
+    },
+    {
+      level:'中级', title:'魔法方法（特殊方法）',
+      desc:'魔法方法让你的类支持Python内置操作，如print()、len()、+运算符、比较等。这是Python对象协议的核心。',
+      code:
+`class Vector:
+    """二维向量类，展示各种魔法方法"""
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    # ── 字符串表示 ──────────────────────
+    def __str__(self):              # print()时调用
+        return f"Vector({self.x}, {self.y})"
+
+    def __repr__(self):             # repr()和调试时调用
+        return f"Vector(x={self.x}, y={self.y})"
+
+    # ── 运算符重载 ──────────────────────
+    def __add__(self, other):       # self + other
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other):       # self - other
+        return Vector(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, scalar):      # self * 数字
+        return Vector(self.x * scalar, self.y * scalar)
+
+    def __rmul__(self, scalar):     # 数字 * self
+        return self.__mul__(scalar)
+
+    # ── 比较运算符 ──────────────────────
+    def __eq__(self, other):        # self == other
+        return self.x == other.x and self.y == other.y
+
+    def __abs__(self):              # abs()
+        return (self.x**2 + self.y**2) ** 0.5
+
+    # ── 长度 ────────────────────────────
+    def __len__(self):              # len()，必须返回整数
+        return int(abs(self))
+
+    # ── 使对象可调用 ─────────────────────
+    def __call__(self, scale):
+        return Vector(self.x * scale, self.y * scale)
+
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+print(v1)           # Vector(3, 4)
+print(v1 + v2)      # Vector(4, 6)
+print(v1 - v2)      # Vector(2, 2)
+print(v1 * 2)       # Vector(6, 8)
+print(3 * v1)       # Vector(9, 12)
+print(abs(v1))      # 5.0
+print(v1 == Vector(3,4))   # True
+print(v1(10))       # Vector(30, 40)，对象当函数调用`
+    },
+    {
+      level:'中级', title:'@classmethod / @staticmethod / @property',
+      desc:'三种特殊方法装饰器，用于不同场景：类方法用于替代构造器，静态方法放工具函数，property实现属性的计算和验证。',
+      code:
+`class Circle:
+    pi = 3.14159
+
+    def __init__(self, radius):
+        self._radius = radius      # _前缀表示"内部属性"
+
+    # ── @property：把方法伪装成属性 ────────
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("半径不能为负数")
+        self._radius = value
+
+    @property
+    def area(self):                # 只读计算属性
+        return Circle.pi * self._radius ** 2
+
+    @property
+    def diameter(self):
+        return self._radius * 2
+
+    # ── @classmethod：第一个参数是类本身(cls) ─
+    @classmethod
+    def from_diameter(cls, diameter):  # 备用构造器
+        return cls(diameter / 2)
+
+    @classmethod
+    def change_pi(cls, new_pi):
+        cls.pi = new_pi
+
+    # ── @staticmethod：与类相关但不需要self/cls
+    @staticmethod
+    def is_valid_radius(r):
+        return isinstance(r, (int, float)) and r >= 0
+
+# 使用
+c1 = Circle(5)
+print(c1.radius)     # 5（像属性一样访问）
+print(c1.area)       # 78.53975
+print(c1.diameter)   # 10
+
+c1.radius = 10       # 触发setter验证
+# c1.radius = -1     # ValueError！
+
+# 从直径创建
+c2 = Circle.from_diameter(20)
+print(c2.radius)     # 10.0
+
+# 静态方法无需实例
+print(Circle.is_valid_radius(5))    # True
+print(Circle.is_valid_radius(-1))   # False`
+    },
+    {
+      level:'进阶', title:'数据类 dataclass 与 __slots__',
+      desc:'dataclass自动生成__init__、__repr__、__eq__，让定义数据容器类变得极简。__slots__优化内存。',
+      code:
+`from dataclasses import dataclass, field
+
+# ── dataclass：自动生成样板代码 ────────────
+@dataclass
+class Point:
+    x: float
+    y: float
+    z: float = 0.0              # 有默认值
+
+    def distance(self):
+        return (self.x**2 + self.y**2 + self.z**2)**0.5
+
+p1 = Point(1.0, 2.0)
+p2 = Point(1.0, 2.0)
+
+print(p1)               # Point(x=1.0, y=2.0, z=0.0)
+print(p1 == p2)         # True（自动生成__eq__）
+
+@dataclass
+class Student:
+    name: str
+    score: float
+    tags: list = field(default_factory=list)  # 可变默认值用field
+
+    def __post_init__(self):    # 初始化后自动调用
+        if not (0 <= self.score <= 100):
+            raise ValueError("分数必须在0-100之间")
+
+s = Student('Alice', 95)
+s.tags.append('优秀')
+
+# ── frozen dataclass（不可变，类似namedtuple）
+@dataclass(frozen=True)
+class Config:
+    host: str = 'localhost'
+    port: int = 8080
+
+cfg = Config()
+# cfg.port = 9090  # 会报错，frozen=True不可修改
+
+# ── __slots__：优化内存 ───────────────────
+class NormalClass:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    # 默认用字典存属性，灵活但占内存
+
+class SlottedClass:
+    __slots__ = ['x', 'y']     # 明确声明属性，用数组存
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    # 内存减少约40%，但不能动态添加属性
+
+import sys
+n = NormalClass(1, 2)
+s = SlottedClass(1, 2)
+print(sys.getsizeof(n.__dict__))  # 约232字节
+# SlottedClass没有__dict__，内存更小`
+    },
+  ],
+  definition: '类是对象的模板（蓝图），对象是类的实例。OOP通过封装、继承、多态实现代码的组织与复用。',
+  principle: 'Python中类本身也是对象（type的实例）。方法查找遵循MRO（C3线性化算法）。__init__不是构造函数，__new__才是真正创建对象的地方。self是约定，本质是第一个参数。',
+  deepLogic: ['class Dog → 创建一个type对象（类也是对象）','dog = Dog() → __new__分配内存，__init__初始化','dog.bark() → Dog.bark(dog) 的语法糖','继承链查找：MRO用__mro__属性可查看顺序'],
+  visual: { title:'🧠 空间化记忆：建筑蓝图与城市', metaphor:'类是建筑蓝图，对象是按蓝图盖好的楼。继承是"在旧蓝图基础上改进"。方法是楼里的功能室，属性是每层楼的状态。MRO是当功能室有歧义时，查找顺序的地图。self是"这栋楼自己"的代词。', scene:'📐蓝图(Class) → 🏢楼(Instance) → 🏗️改造(继承) → 🗺️地图(MRO)' },
+  practice: ['创建Animal→Dog→GuideDog继承链，观察__mro__','重写__repr__、__str__、__eq__，理解魔法方法体系','用@property实现只读属性，理解描述符协议'],
+  quizzes: [
+    { diff:'基础', q:'创建Student类，有name和score属性，is_pass()方法（>=60返回True）。', a:'在__init__里设置属性，is_pass返回比较结果。', code:'class Student:\n    def __init__(self, name, score):\n        self.name = name\n        self.score = score\n    def is_pass(self):\n        return self.score >= 60' },
+    { diff:'基础', q:'self是什么？为什么每个方法第一个参数都是self？', a:'self是调用该方法的对象本身。dog1.bark()等价于Dog.bark(dog1)，Python自动把dog1传给第一个参数self。通过self才能访问该对象的属性和方法。', code:'' },
+    { diff:'进阶', q:'@classmethod和@staticmethod有什么区别？各自在什么场景使用？', a:'classmethod第一个参数是cls（类本身），可以访问和修改类属性，常用作备用构造器（如from_dict()）。staticmethod没有self或cls，只是逻辑上属于这个类的工具函数。', code:'class Date:\n    @classmethod\n    def from_string(cls, s):  # 备用构造器\n        y,m,d = map(int, s.split("-"))\n        return cls(y, m, d)\n    @staticmethod\n    def is_leap(year):        # 工具函数\n        return year%4==0' },
+    { diff:'思考', q:'__str__和__repr__有什么区别？应该如何设计？', a:'__str__面向用户，print()时调用，应该返回易读的字符串。__repr__面向开发者，在调试、repr()和容器中调用，应该返回能重建对象的字符串（理想情况下eval(__repr__)能还原对象）。如果只实现一个，实现__repr__，因为str不存在时会fallback到repr。', code:'class Point:\n    def __init__(self,x,y): self.x,self.y=x,y\n    def __str__(self):  return f"({self.x},{self.y})"\n    def __repr__(self): return f"Point({self.x},{self.y})"' },
+    { diff:'基础', q:'创建 Animal 和 Dog 两个类，Dog 继承 Animal，重写 speak() 方法，并调用父类的 __init__。', a:'子类用super().__init__()调用父类初始化；重写同名方法实现多态。', code:'class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self): return "..."\n\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name)  # 调用父类\n        self.breed = breed\n    def speak(self): return "汪！"\n\nd = Dog("旺财", "柴犬")\nprint(d.speak())   # 汪！\nprint(d.name)      # 旺财（继承自Animal）' },
+    { diff:'基础', q:'类属性和实例属性的区别是什么？如果实例和类有同名属性，访问时哪个优先？', a:'类属性属于类，所有实例共享；实例属性属于具体对象，每个实例独有。访问时实例属性优先（Python先在实例__dict__里找，找不到才去类的__dict__）。给实例赋值同名属性会"遮蔽"类属性，不影响类属性本身。', code:'class C:\n    x = 10  # 类属性\nc1 = C()\nc1.x = 99       # 实例属性，遮蔽类属性\nprint(c1.x)     # 99（实例）\nprint(C.x)      # 10（类属性不变）' },
+    { diff:'进阶', q:'什么是MRO（方法解析顺序）？菱形继承时Python如何决定调用哪个父类的方法？', a:'MRO是Python查找方法的顺序，用C3线性化算法计算。菱形继承D(B,C)，B(A)，C(A)时，MRO是D→B→C→A，确保每个类只出现一次且父类在子类之后。用ClassName.__mro__可以查看。', code:'class A:\n    def who(self): print("A")\nclass B(A):\n    def who(self): print("B")\nclass C(A):\n    def who(self): print("C")\nclass D(B, C): pass\n\nd = D()\nd.who()          # B（MRO: D→B→C→A）\nprint(D.__mro__) # (D,B,C,A,object)' },
+    { diff:'进阶', q:'用 @property 把 Circle 类的 radius 改为私有，并添加只读的 area 属性，修改半径时自动验证不能为负数。', a:'@property把方法变成属性访问；@xxx.setter处理赋值；setter里做验证；area只有getter没有setter就是只读。', code:'import math\nclass Circle:\n    def __init__(self, r):\n        self.radius = r  # 触发setter\n    @property\n    def radius(self): return self._radius\n    @radius.setter\n    def radius(self, v):\n        if v < 0: raise ValueError("半径不能为负")\n        self._radius = v\n    @property\n    def area(self): return math.pi * self._radius**2\nc = Circle(5)\nprint(c.area)  # 78.53...' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 5
+{
+  id:5, emoji:'⚡', title:'迭代器与生成器', subtitle:'惰性求值的时间魔法', color:'#EF4444',
+  concept: {
+    intro:'想象你要读一本有10000页的书。你不会先把所有页都复印一遍再开始读——你只需要当前看的那页。生成器就是这个思路：不提前生成所有数据，而是需要时才生成下一个。这对处理大数据非常重要，能极大节省内存。',
+    analogy: { title:'🎫 生活类比：ATM取款机', text:'普通列表像"一次性把所有钱取出来放在桌上"——全部都在内存里。生成器像"安装了一台ATM机"——钱还在银行（还没生成），你每次按需取一张。如果你要处理100GB的日志文件，列表会把内存撑爆，生成器每次只处理一行。' },
+    keywords: ['迭代器','__iter__','__next__','StopIteration','生成器函数','yield','yield from','生成器表达式','next()','惰性求值'],
+    steps: [
+      { text:'<strong>可迭代对象：</strong>可以用for循环遍历的都是可迭代对象，它们实现了__iter__方法。列表、字符串、range都是。' },
+      { text:'<strong>yield关键字：</strong>在函数里用yield代替return，这个函数就变成了生成器函数。yield会"暂停"函数，把值交出去，等下次需要时再从暂停处继续。' },
+      { text:'<strong>生成器的使用：</strong>调用生成器函数返回生成器对象（不立刻执行）。对它调用next()才真正执行到下一个yield。for循环会自动反复调用next()。' },
+      { text:'<strong>生成器表达式：</strong>类似列表推导式，但用圆括号。(x*2 for x in range(10))创建生成器，不占大量内存。' }
+    ],
+    warn:'<strong>关键限制：</strong>生成器只能遍历一次！用完了就空了，不能重头再来。如果需要多次遍历同样的数据，用列表。如果数据量大或是无限序列，用生成器。'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'迭代器协议：__iter__ 和 __next__',
+      desc:'理解迭代器的底层协议，自己实现一个迭代器类，这是理解for循环本质的关键。',
+      code:
+`# ── 迭代器协议 ───────────────────────────
+# 任何实现了__iter__和__next__的对象都是迭代器
+class CountDown:
+    """从n倒数到1的迭代器"""
+    def __init__(self, n):
+        self.n = n
+
+    def __iter__(self):     # 返回迭代器本身
+        return self
+
+    def __next__(self):     # 返回下一个值
+        if self.n <= 0:
+            raise StopIteration  # 信号：迭代结束
+        self.n -= 1
+        return self.n + 1
+
+# 使用自定义迭代器
+for num in CountDown(5):
+    print(num, end=' ')     # 5 4 3 2 1
+
+# ── for循环的本质 ─────────────────────────
+lst = [10, 20, 30]
+
+# for x in lst: print(x)  等价于：
+it = iter(lst)              # 调用lst.__iter__()
+while True:
+    try:
+        x = next(it)        # 调用it.__next__()
+        print(x)
+    except StopIteration:
+        break               # 捕获StopIteration，退出循环
+
+# ── iter() 和 next() 的使用 ──────────────
+fruits = ['苹果', '香蕉', '橙子']
+it = iter(fruits)
+print(next(it))             # 苹果
+print(next(it))             # 香蕉
+print(next(it, '没了'))     # 橙子（next的第2个参数是默认值）
+print(next(it, '没了'))     # 没了（不会报错）
+
+# ── 验证range是惰性的 ─────────────────────
+import sys
+r = range(1_000_000)
+lst = list(range(1_000_000))
+print(sys.getsizeof(r))     # 48字节（固定大小！）
+print(sys.getsizeof(lst))   # 约8MB`
+    },
+    {
+      level:'基础', title:'生成器函数：yield 的所有用法',
+      desc:'yield是生成器的核心。理解yield如何暂停函数、保留状态，以及yield from的委托功能。',
+      code:
+`# ── 基本生成器函数 ────────────────────────
+def count_up(start, end):
+    n = start
+    while n <= end:
+        yield n             # 暂停在这里，交出n
+        n += 1              # 下次next()从这里继续
+
+gen = count_up(1, 5)
+print(type(gen))            # <class 'generator'>
+print(next(gen))            # 1
+print(next(gen))            # 2
+print(list(gen))            # [3, 4, 5]（消费剩余）
+
+# ── 生成器函数 vs 普通函数 ────────────────
+def gen_func():
+    print("开始执行")
+    yield 1
+    print("yield 1之后")
+    yield 2
+    print("yield 2之后")
+    yield 3
+    print("函数结束")
+
+g = gen_func()              # 不执行！
+print("还没开始")
+print(next(g))              # 开始执行 → 1
+print(next(g))              # yield 1之后 → 2
+for x in g:                 # yield 2之后 → 3 → 函数结束
+    print(x)
+
+# ── 无限生成器 ────────────────────────────
+def integers_from(n=0):
+    while True:
+        yield n
+        n += 1
+
+gen = integers_from(10)
+print([next(gen) for _ in range(5)])  # [10,11,12,13,14]
+
+# ── yield from：委托给子生成器 ───────────
+def gen1():
+    yield 1
+    yield 2
+
+def gen2():
+    yield 'a'
+    yield 'b'
+
+def combined():
+    yield from gen1()       # 等同于 for x in gen1(): yield x
+    yield from gen2()
+    yield from range(3)
+
+print(list(combined()))     # [1, 2, 'a', 'b', 0, 1, 2]
+
+# ── 生成器作为数据流管道 ──────────────────
+def read_lines(text):
+    for line in text.split('\n'):
+        yield line.strip()
+
+def filter_empty(lines):
+    for line in lines:
+        if line:
+            yield line
+
+def add_numbers(lines):
+    for i, line in enumerate(lines, 1):
+        yield f"{i}: {line}"
+
+text = "hello\n\nworld\n\npython"
+pipeline = add_numbers(filter_empty(read_lines(text)))
+for line in pipeline:
+    print(line)`
+    },
+    {
+      level:'中级', title:'生成器表达式与内存对比',
+      desc:'生成器表达式是创建生成器的简洁语法，与列表推导式的区别仅仅是括号，但内存占用可以相差千倍。',
+      code:
+`import sys
+
+# ── 列表推导式 vs 生成器表达式 ────────────
+lst = [x**2 for x in range(100_000)]   # 方括号=列表
+gen = (x**2 for x in range(100_000))   # 圆括号=生成器
+
+print(sys.getsizeof(lst))   # 约 800KB（全部存在内存里）
+print(sys.getsizeof(gen))   # 约 200字节（只存状态）
+
+# ── 求和：不需要列表时用生成器 ────────────
+# 列表方式（多余的内存）
+total1 = sum([x**2 for x in range(1_000_000)])
+
+# 生成器方式（节省内存，性能相近）
+total2 = sum(x**2 for x in range(1_000_000))
+# 注意：这里省了外面的括号，sum()直接接受生成器
+
+print(total1 == total2)     # True
+
+# ── 多个生成器表达式链接 ──────────────────
+lines = ["  Hello  ", "", "  World  ", "  Python  ", ""]
+# 过滤空行并去除空格
+cleaned = (line.strip() for line in lines)
+non_empty = (line for line in cleaned if line)
+print(list(non_empty))      # ['Hello', 'World', 'Python']
+
+# ── 生成器只能遍历一次！─────────────────
+gen = (x for x in range(5))
+print(list(gen))            # [0,1,2,3,4]
+print(list(gen))            # []（空了！）
+
+# 如果需要多次遍历，用列表
+lst = list(range(5))
+print(lst)                  # [0,1,2,3,4]
+print(lst)                  # [0,1,2,3,4]（还在）
+
+# ── itertools：强大的迭代器工具库 ─────────
+import itertools
+
+# 无限计数
+counter = itertools.count(10, 2)  # 从10开始，步长2
+print(list(itertools.islice(counter, 5)))  # [10,12,14,16,18]
+
+# 循环迭代
+cycler = itertools.cycle(['A','B','C'])
+print([next(cycler) for _ in range(7)])  # ['A','B','C','A','B','C','A']
+
+# 链接多个迭代器
+chained = list(itertools.chain([1,2], [3,4], [5,6]))
+print(chained)              # [1,2,3,4,5,6]`
+    },
+    {
+      level:'进阶', title:'生成器的 send() 和 throw() — 双向通信',
+      desc:'生成器不只能输出值，还能通过send()接收外部输入，实现双向数据流，这是协程的基础。',
+      code:
+`# ── send()：向生成器发送值 ────────────────
+def running_average():
+    """接收数字，每次返回到目前为止的平均值"""
+    total = 0
+    count = 0
+    avg = None
+    while True:
+        value = yield avg   # yield把avg交出去，同时等待send()
+        total += value
+        count += 1
+        avg = total / count
+
+gen = running_average()
+next(gen)                   # 必须先next()启动，到达第一个yield
+
+print(gen.send(10))         # 10.0
+print(gen.send(20))         # 15.0
+print(gen.send(30))         # 20.0
+print(gen.send(40))         # 25.0
+
+# ── throw()：向生成器注入异常 ─────────────
+def safe_gen():
+    try:
+        while True:
+            x = yield
+            print(f"接收到: {x}")
+    except ValueError as e:
+        print(f"捕获异常: {e}")
+        yield "已处理"
+
+g = safe_gen()
+next(g)
+g.send(1)                   # 接收到: 1
+g.send(2)                   # 接收到: 2
+print(g.throw(ValueError, "出错了"))  # 捕获异常: 出错了 → 已处理
+
+# ── close()：关闭生成器 ───────────────────
+def infinite():
+    try:
+        n = 0
+        while True:
+            yield n
+            n += 1
+    except GeneratorExit:   # 关闭时触发
+        print("生成器被关闭了")
+
+g = infinite()
+print(next(g))              # 0
+print(next(g))              # 1
+g.close()                   # 生成器被关闭了`
+    },
+  ],
+  definition: '迭代器是实现了__iter__和__next__的对象；生成器是用yield暂停执行的特殊函数，是创建迭代器的优雅方式。',
+  principle: '生成器在yield时暂停——保存整个函数栈帧（局部变量、执行位置），等待next()唤醒。这是协程的基础。yield from委托给子生成器。惰性求值节省内存。',
+  deepLogic: ['yield像"暂停键"：函数状态冻结在此处','生成器对象 = 冻结的函数 + 恢复机制','next() = "解冻，执行到下一个yield"','StopIteration = 函数执行完毕的信号'],
+  visual: { title:'🧠 空间化记忆：暂停的电影与快递流水线', metaphor:'生成器像一部可以暂停的电影——每次next()就播放到下一个yield然后暂停，状态完整保留。整个序列不提前生成，就像快递不先把所有包裹堆满仓库，而是一个一个按需打包发出。', scene:'⏸️暂停(yield) → ▶️继续(next) → 📦按需生产(惰性) → 🏭工厂(generator)' },
+  practice: ['实现斐波那契生成器，对比列表版本的内存占用','用生成器实现无限序列：永远不停止的计数器','实现管道：gen1 | gen2 | gen3 的数据流处理链'],
+  quizzes: [
+    { diff:'基础', q:'写一个生成器函数countdown，从n倒数到1。', a:'用while循环，每次yield当前数字，然后减1。', code:'def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nfor num in countdown(5): print(num)' },
+    { diff:'基础', q:'为什么生成器只能遍历一次？第二次遍历会发生什么？', a:'生成器是有状态的对象，它记录当前执行位置。遍历完毕后，生成器内部函数已经执行完，状态无法重置。第二次遍历会立刻得到空结果（StopIteration）。', code:'g = (x for x in range(3))\nprint(list(g))  # [0,1,2]\nprint(list(g))  # []（空了）' },
+    { diff:'进阶', q:'实现无限斐波那契生成器，只取前10个数字。', a:'用两个变量a、b轮换，无限yield。用itertools.islice或手动next()取前N个。', code:'def fib():\n    a, b = 1, 1\n    while True:\n        yield a\n        a, b = b, a+b\n\nimport itertools\nprint(list(itertools.islice(fib(), 10)))\n# [1,1,2,3,5,8,13,21,34,55]' },
+    { diff:'基础', q:'<code>[x*2 for x in range(1000000)]</code> 和 <code>(x*2 for x in range(1000000))</code> 有什么区别？各占多少内存？', a:'列表推导式立刻创建含100万个元素的列表，约占8MB内存。生成器表达式只创建一个生成器对象，占几十字节，按需计算每个值。用sys.getsizeof()可以验证。', code:'import sys\nlist_comp = [x*2 for x in range(1000000)]\ngen_expr  = (x*2 for x in range(1000000))\nprint(sys.getsizeof(list_comp))  # ~8MB\nprint(sys.getsizeof(gen_expr))   # ~104 bytes' },
+    { diff:'基础', q:'<code>next(gen, default)</code> 中第二个参数有什么用？不传会怎样？', a:'第二个参数是默认值：生成器耗尽时返回默认值而不是抛出StopIteration。不传第二参数时，生成器耗尽会抛出StopIteration异常。', code:'g = (x for x in range(2))\nprint(next(g, "空了"))  # 0\nprint(next(g, "空了"))  # 1\nprint(next(g, "空了"))  # "空了"（默认值）\nnext(g)                 # StopIteration！' },
+    { diff:'进阶', q:'生成器的 <code>send()</code> 方法有什么用？和 <code>next()</code> 有什么区别？', a:'next(g)等价于g.send(None)，恢复执行到下一个yield。send(value)还会把value作为yield表达式的返回值，传给生成器内部。第一次必须send(None)或用next()启动生成器（因为还没执行到yield）。', code:'def echo():\n    while True:\n        received = yield      # yield表达式的值来自send()\n        print(f"收到: {received}")\n\ng = echo()\nnext(g)           # 启动，执行到第一个yield\ng.send("hello")   # 收到: hello\ng.send("world")   # 收到: world' },
+    { diff:'进阶', q:'实现 <code>take(n, iterable)</code> 函数，只取前n个元素，不消耗整个可迭代对象（不用 itertools）。', a:'用for循环但计数，达到n时break；或用生成器实现惰性take。关键是break后不再消耗后面的元素，对无限生成器尤其重要。', code:'def take(n, iterable):\n    count = 0\n    for item in iterable:\n        if count >= n: break\n        yield item\n        count += 1\n\n# 对无限序列有效\ndef naturals():\n    n = 1\n    while True: yield n; n+=1\n\nprint(list(take(5, naturals())))  # [1,2,3,4,5]' },
+    { diff:'思考', q:'yield from 和直接 for x in subgen: yield x 有什么区别？', a:'对于基本值传递二者等价。但yield from更强大：它还会传递send()的值和throw()的异常到子生成器，并收集子生成器的return值（通过StopIteration.value）。直接for循环做不到这些，所以在协程场景下必须用yield from。', code:'' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 6
+{
+  id:6, emoji:'🎭', title:'装饰器', subtitle:'函数的包装艺术', color:'#EC4899',
+  concept: {
+    intro:'有时候你想给很多函数添加同样的功能——记录调用时间、检查用户是否登录、计算函数运行多久。如果每个函数都手动加这些代码，太繁琐了。装饰器的思路：写一个"包装函数"，在原函数前后偷偷加料，原函数本身不需要改动。',
+    analogy: { title:'☕ 生活类比：咖啡加料', text:'装饰器就像咖啡加料——原来是一杯黑咖啡（原函数），加奶变成拿铁（加一层装饰），再加糖浆变成焦糖拿铁（再加一层装饰）。黑咖啡本身没变，只是被套了几层外壳。@符号就是"给这杯咖啡加料"的操作。' },
+    keywords: ['装饰器','@语法糖','wrapper包装函数','functools.wraps','带参数的装饰器','类装饰器','叠加装饰器'],
+    steps: [
+      { text:'<strong>装饰器的本质：</strong>装饰器是一个函数，它接受一个函数作为参数，返回一个新函数。@decorator 等价于 func = decorator(func)。' },
+      { text:'<strong>写一个装饰器：</strong>在装饰器函数内部定义wrapper函数，在wrapper里执行前置/后置逻辑，中间调用原函数func(*args, **kwargs)，最后return wrapper。' },
+      { text:'<strong>*args和**kwargs：</strong>wrapper需要能接受任意参数并转发给原函数。这样装饰器才能对任意函数使用。' },
+      { text:'<strong>@functools.wraps：</strong>加在wrapper上，让wrapper保留原函数的__name__、__doc__等信息，是好习惯。' }
+    ],
+    warn:'<strong>理解@语法糖：</strong>@timer 写在函数前，Python看到它时自动执行 slow_function = timer(slow_function)。此后slow_function指向的是wrapper函数，原函数被封存在wrapper的闭包里。'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'从零理解装饰器的构建过程',
+      desc:'一步一步展示装饰器是如何从"手动包装"演变成@语法糖的，彻底理解背后原理。',
+      code:
+`import functools, time
+
+# ── 步骤1：手动包装（装饰器的本质）──────────
+def original(x):
+    return x * 2
+
+def my_wrapper(func):
+    def inner(*args, **kwargs):
+        print(f"调用 {func.__name__} 前")
+        result = func(*args, **kwargs)
+        print(f"调用 {func.__name__} 后")
+        return result
+    return inner
+
+# 手动应用包装
+original = my_wrapper(original)
+original(5)             # 调用前 → 调用后
+
+# ── 步骤2：用@语法糖（完全等价）────────────
+def timer(func):
+    @functools.wraps(func)      # 保留原函数信息
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        print(f"[{func.__name__}] 耗时 {end-start:.6f}秒")
+        return result
+    return wrapper
+
+@timer                          # 等价于 slow = timer(slow)
+def slow(n):
+    time.sleep(n)
+    return f"等了{n}秒"
+
+print(slow(0.1))
+
+# ── 步骤3：验证functools.wraps的作用 ────────
+def bad_deco(func):
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+def good_deco(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@bad_deco
+def my_func(): """我的函数"""
+print(my_func.__name__)        # wrapper ← 信息丢失！
+print(my_func.__doc__)         # None
+
+@good_deco
+def my_func2(): """我的函数"""
+print(my_func2.__name__)       # my_func2 ← 正确保留
+print(my_func2.__doc__)        # 我的函数`
+    },
+    {
+      level:'中级', title:'实用装饰器大全',
+      desc:'五个真实场景中最常用的装饰器：日志、计时、重试、缓存、权限验证。直接可用在实际项目中。',
+      code:
+`import functools, time, random
+
+# ── 1. 日志装饰器 ─────────────────────────
+def log(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"调用 {func.__name__}({args},{kwargs})")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} 返回 {result}")
+        return result
+    return wrapper
+
+@log
+def add(a, b): return a + b
+add(3, 5)
+
+# ── 2. 计时装饰器 ─────────────────────────
+def timer(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed = time.perf_counter() - start
+        print(f"[{func.__name__}] {elapsed:.4f}s")
+        return result
+    return wrapper
+
+# ── 3. 重试装饰器（带参数）────────────────
+def retry(times=3, delay=0.5, exceptions=(Exception,)):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, times+1):
+                try:
+                    return func(*args, **kwargs)
+                except exceptions as e:
+                    print(f"第{attempt}次失败: {e}")
+                    if attempt < times:
+                        time.sleep(delay)
+            raise RuntimeError(f"{func.__name__} 重试{times}次均失败")
+        return wrapper
+    return decorator
+
+@retry(times=3, delay=0.1)
+def unstable():
+    if random.random() < 0.7:
+        raise ConnectionError("网络错误")
+    return "成功"
+
+# ── 4. 缓存装饰器 ─────────────────────────
+def cache(func):
+    memo = {}
+    @functools.wraps(func)
+    def wrapper(*args):
+        if args not in memo:
+            memo[args] = func(*args)
+        return memo[args]
+    return wrapper
+
+@cache
+def fib(n):
+    return n if n <= 1 else fib(n-1) + fib(n-2)
+
+print(fib(35))  # 很快，因为有缓存
+
+# Python内置更好的缓存
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def fib2(n):
+    return n if n <= 1 else fib2(n-1) + fib2(n-2)`
+    },
+    {
+      level:'中级', title:'带参数的装饰器 — 三层函数嵌套',
+      desc:'想让装饰器接受参数（如@retry(times=3)），需要多一层函数。理解这个"工厂模式"是掌握高级装饰器的关键。',
+      code:
+`import functools
+
+# ── 无参数 vs 有参数装饰器的对比 ─────────
+# 无参数：两层函数
+def simple(func):           # 第1层：接收函数
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):   # 第2层：包装
+        print("before")
+        return func(*args, **kwargs)
+    return wrapper
+
+# 有参数：三层函数
+def repeat(times):          # 第1层：接收装饰器参数
+    def decorator(func):    # 第2层：接收函数
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):  # 第3层：包装
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator        # 返回真正的装饰器
+
+@repeat(times=3)
+def say(msg):
+    print(msg)
+
+say("Hello")                # 打印3次Hello
+
+# ── 等价的手动调用 ────────────────────────
+# @repeat(times=3) 等价于：
+# decorator = repeat(times=3)  # 先调用repeat得到decorator
+# say = decorator(say)         # 再用decorator装饰say
+
+# ── 可选参数装饰器（高级）─────────────────
+def flexible(func=None, *, times=1):
+    """既可以 @flexible 又可以 @flexible(times=3)"""
+    if func is None:                # 带参数：flexible(times=3)
+        return lambda f: flexible(f, times=times)
+    @functools.wraps(func)          # 不带参数：flexible
+    def wrapper(*args, **kwargs):
+        for _ in range(times):
+            result = func(*args, **kwargs)
+        return result
+    return wrapper
+
+@flexible
+def hello(): print("Hello")    # 不带参数，执行1次
+
+@flexible(times=2)
+def world(): print("World")    # 带参数，执行2次
+
+hello()                         # Hello
+world()                         # World World`
+    },
+    {
+      level:'中级', title:'叠加装饰器与类装饰器',
+      desc:'多个装饰器可以叠加使用，执行顺序是由内到外。类也可以作为装饰器，通过__init__和__call__实现。',
+      code:
+`import functools, time
+
+def bold(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return f"<b>{func(*args, **kwargs)}</b>"
+    return wrapper
+
+def italic(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return f"<i>{func(*args, **kwargs)}</i>"
+    return wrapper
+
+def underline(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return f"<u>{func(*args, **kwargs)}</u>"
+    return wrapper
+
+# ── 叠加装饰器（从下到上依次包裹）────────
+@bold
+@italic
+@underline
+def text():
+    return "Hello"
+
+# 等价于：text = bold(italic(underline(text)))
+# 执行顺序：underline → italic → bold
+print(text())  # <b><i><u>Hello</u></i></b>
+
+# ── 类装饰器：用类来实现装饰器 ────────────
+class Timer:
+    """类装饰器，统计函数被调用次数和总时间"""
+    def __init__(self, func):
+        functools.update_wrapper(self, func)
+        self.func = func
+        self.calls = 0
+        self.total_time = 0
+
+    def __call__(self, *args, **kwargs):    # 让实例可调用
+        self.calls += 1
+        start = time.perf_counter()
+        result = self.func(*args, **kwargs)
+        self.total_time += time.perf_counter() - start
+        return result
+
+    def stats(self):
+        return f"调用{self.calls}次，总耗时{self.total_time:.4f}s"
+
+# 注意：此类装饰器用于全局函数时完美运行。
+# 若用于类的实例方法（@Timer放在方法上），会因缺少描述符
+# 协议（__get__）而丢失self绑定，导致参数错误。
+# 需给Timer加__get__方法才能在类方法上正确使用。
+@Timer
+def compute(n):
+    return sum(range(n))
+
+compute(1000)
+compute(10000)
+compute(100000)
+print(compute.stats())  # 调用3次，总耗时...s`
+    },
+  ],
+  definition: '装饰器是接受函数并返回新函数的高阶函数，通过@语法糖实现对函数行为的无侵入增强。',
+  principle: '@decorator本质是decorator(func)的语法糖。functools.wraps保留原函数元信息。装饰器栈从内到外依次包裹。类装饰器和带参数的装饰器通过多层闭包实现。',
+  deepLogic: ['@log = func = log(func) 完全等价','带参数装饰器需要三层函数嵌套','装饰器叠加：@A @B → A(B(func))','functools.wraps防止元信息丢失'],
+  visual: { title:'🧠 空间化记忆：俄罗斯套娃与安保系统', metaphor:'装饰器像安保系统——原来的函数是VIP室，装饰器是门口的保安。保安可以在你进门前检查证件（前置逻辑），在你出门后记录（后置逻辑），但VIP室本身不变。多层装饰器是一道道安检门。', scene:'🚪安检门(decorator) → 👑VIP室(原函数) → 🎁礼盒套娃(嵌套) → 🪪身份证(wraps)' },
+  practice: ['实现@retry(times=3)装饰器，失败自动重试','实现@cache装饰器，缓存函数结果','实现@singleton类装饰器，确保只有一个实例'],
+  quizzes: [
+    { diff:'基础', q:'写一个@logger装饰器，在每次函数被调用时打印"函数xxx被调用了"。', a:'装饰器接收func，返回wrapper，wrapper里先打印再调用原函数。', code:'def logger(func):\n    @functools.wraps(func)\n    def wrapper(*args, **kwargs):\n        print(f"函数{func.__name__}被调用了")\n        return func(*args, **kwargs)\n    return wrapper' },
+    { diff:'基础', q:'不加@functools.wraps(func)会有什么问题？', a:'被装饰函数的__name__、__doc__会变成"wrapper"，调试时找不到真正的函数名。日志、错误追踪都会显示错误的函数名。', code:'@bad_deco\ndef my_func(): pass\nprint(my_func.__name__)  # "wrapper"（错误！）' },
+    { diff:'进阶', q:'写一个@validate(type)装饰器，验证函数第一个参数必须是指定类型，否则抛出TypeError。', a:'带参数装饰器需要三层嵌套：接收类型→接收函数→wrapper里检查类型。', code:'def validate(expected_type):\n    def decorator(func):\n        @functools.wraps(func)\n        def wrapper(arg, *args, **kwargs):\n            if not isinstance(arg, expected_type):\n                raise TypeError(f"期望{expected_type}，得到{type(arg)}")\n            return func(arg, *args, **kwargs)\n        return wrapper\n    return decorator\n\n@validate(int)\ndef double(n): return n * 2' },
+    { diff:'思考', q:'@A @B @C 三个装饰器叠加，执行顺序是什么？包装顺序和调用顺序各是什么？', a:'包装顺序（定义时，从下到上）：先C包装func，再B包装结果，再A包装结果。等价于 func = A(B(C(func)))。调用顺序（运行时，从上到下）：先执行A的前置代码，再B，再C，再原函数，再C后置，再B后置，再A后置。', code:'@A  # 最外层\n@B  # 中间层\n@C  # 最内层（最先包装）\ndef func(): pass\n# 等价于：func = A(B(C(func)))' },
+    { diff:'基础', q:'不用@语法糖，手动把 <code>def add(a,b): return a+b</code> 应用 timer 装饰器，写出等价代码。', a:'@timer写在函数定义前等价于定义后立刻执行 add = timer(add)。理解这个等价关系是彻底掌握装饰器的关键。', code:'import time, functools\ndef timer(func):\n    @functools.wraps(func)\n    def wrapper(*args, **kwargs):\n        t = time.time()\n        result = func(*args, **kwargs)\n        print(f"{func.__name__}: {time.time()-t:.4f}s")\n        return result\n    return wrapper\n\ndef add(a, b): return a+b\nadd = timer(add)   # 等价于 @timer\nprint(add(1, 2))   # add: 0.0000s' },
+    { diff:'基础', q:'用类来实现一个 <code>@CallCount</code> 装饰器，记录函数被调用的次数，可通过 <code>func.count</code> 访问。', a:'类装饰器：__init__接收func，__call__实现调用逻辑，把count作为实例属性存储。优点是状态管理比闭包更清晰。', code:'import functools\nclass CallCount:\n    def __init__(self, func):\n        functools.update_wrapper(self, func)\n        self.func = func\n        self.count = 0\n    def __call__(self, *args, **kwargs):\n        self.count += 1\n        return self.func(*args, **kwargs)\n\n@CallCount\ndef hello(): print("hi")\nhello(); hello(); hello()\nprint(hello.count)  # 3' },
+    { diff:'进阶', q:'实现 <code>@lru_cache(maxsize)</code> 简化版：缓存函数结果，最多保存 maxsize 条，超出时删除最早的。', a:'带参数装饰器需要三层函数。缓存用OrderedDict（插入有序），超出maxsize时popitem(last=False)删除最旧的。', code:'from collections import OrderedDict\nimport functools\ndef lru(maxsize=128):\n    def decorator(func):\n        cache = OrderedDict()\n        @functools.wraps(func)\n        def wrapper(*args):\n            if args in cache:\n                cache.move_to_end(args)\n                return cache[args]\n            result = func(*args)\n            cache[args] = result\n            if len(cache) > maxsize:\n                cache.popitem(last=False)\n            return result\n        return wrapper\n    return decorator' },
+    { diff:'进阶', q:'装饰器执行时机是什么？模块导入时还是函数调用时？这有什么实际影响？', a:'装饰器在模块被导入时就执行（类定义时），不是函数调用时。影响：@register装饰器可以在导入时自动收集所有函数到注册表；如果装饰器有副作用（如数据库连接），导入就会触发它；性能开销在导入时一次性承担。', code:'registry = []\ndef register(func):\n    registry.append(func)  # 导入时就执行！\n    return func\n\n@register\ndef f1(): pass\n@register\ndef f2(): pass\n\nprint(registry)  # [f1, f2]（导入后立刻就有）' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 7
+{
+  id:7, emoji:'🧠', title:'异步编程', subtitle:'并发的量子叠加态', color:'#06B6D4',
+  concept: {
+    intro:'普通程序是单线程的：做完这件事，才能做下一件事。如果一件事需要等待（比如从网络下载数据），CPU就干坐着浪费时间。异步编程的核心思想是：等待的时候不要浪费，去做别的事，等等待完成了再回来继续。',
+    analogy: { title:'📱 生活类比：同时发微信给多人', text:'同步模式：给朋友A发消息，等A回复，再给B发，等B回复……效率极低。异步模式：同时给A、B、C发消息，哪个先回就先处理谁，不用傻等。async/await就是这套机制——await的意思是"这里需要等，我先去做别的，等好了通知我"。' },
+    keywords: ['async def','await','协程coroutine','事件循环event loop','asyncio','asyncio.gather','asyncio.create_task','asyncio.Queue','asyncio.Semaphore'],
+    steps: [
+      { text:'<strong>async def：</strong>在def前加async，这个函数变成协程函数。调用它不会立刻执行，而是返回一个协程对象。' },
+      { text:'<strong>await：</strong>只能在async函数内使用。await后跟可等待对象（协程、Task、Future）。执行到await时，当前协程暂停，事件循环可以去运行其他协程。' },
+      { text:'<strong>asyncio.run()：</strong>运行异步程序的入口，把最顶层的协程传给它，创建事件循环并运行。' },
+      { text:'<strong>asyncio.gather()：</strong>并发运行多个协程，等所有都完成再返回结果列表。这是发挥异步优势的关键。' }
+    ],
+    warn:'<strong>适用场景：</strong>异步适合I/O密集型任务（网络请求、文件读写、数据库）。对于CPU密集型任务（大量计算），异步没有帮助，要用多进程。不要把所有代码都用async。'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'async/await 基础：从同步到异步',
+      desc:'对比同步和异步代码，理解await如何让出控制权，以及事件循环如何调度多个协程。',
+      code:
+`import asyncio, time
+
+# ── 同步版本（串行）──────────────────────
+def sync_fetch(name, delay):
+    print(f"开始获取 {name}")
+    time.sleep(delay)           # 阻塞整个程序
+    print(f"完成获取 {name}")
+    return f"{name}的数据"
+
+start = time.time()
+sync_fetch("用户信息", 1)
+sync_fetch("订单列表", 1)
+sync_fetch("商品推荐", 1)
+print(f"同步耗时: {time.time()-start:.1f}s")  # 约3秒
+
+# ── 异步版本（并发）──────────────────────
+async def async_fetch(name, delay):
+    print(f"开始获取 {name}")
+    await asyncio.sleep(delay)  # 让出控制权，不阻塞
+    print(f"完成获取 {name}")
+    return f"{name}的数据"
+
+async def main():
+    start = time.time()
+
+    # 并发运行三个协程
+    results = await asyncio.gather(
+        async_fetch("用户信息", 1),
+        async_fetch("订单列表", 1),
+        async_fetch("商品推荐", 1),
+    )
+
+    print(f"异步耗时: {time.time()-start:.1f}s")  # 约1秒
+    print(results)
+
+asyncio.run(main())
+
+# ── 核心概念验证 ──────────────────────────
+async def step_by_step():
+    print("1. 开始")
+    await asyncio.sleep(0)      # 让出控制权（0秒也让出）
+    print("3. 恢复（2在别的协程执行了）")
+
+async def interleaved():
+    print("2. 另一个协程")
+
+async def demo():
+    await asyncio.gather(step_by_step(), interleaved())`
+    },
+    {
+      level:'中级', title:'Task 与并发控制',
+      desc:'create_task立刻启动协程并发执行；Semaphore控制最大并发数；timeout设置超时。',
+      code:
+`import asyncio, time
+
+# ── asyncio.create_task：立刻启动 ────────
+async def background_task(name, delay):
+    await asyncio.sleep(delay)
+    print(f"任务 {name} 完成")
+    return name
+
+async def main():
+    # gather：等所有完成才继续
+    results = await asyncio.gather(
+        background_task("A", 1),
+        background_task("B", 2),
+        background_task("C", 0.5),
+    )
+    print(results)  # ['A','B','C']（按输入顺序，不是完成顺序）
+
+    # create_task：后台运行，可以做其他事
+    task1 = asyncio.create_task(background_task("X", 2))
+    task2 = asyncio.create_task(background_task("Y", 1))
+
+    print("任务已启动，我去做别的事...")
+    await asyncio.sleep(0.5)
+    print("做完别的事了")
+
+    await task1                 # 等待task1
+    await task2                 # 等待task2
+
+asyncio.run(main())
+
+# ── Semaphore：控制最大并发数 ─────────────
+async def limited_fetch(sem, id):
+    async with sem:             # 最多3个协程同时执行
+        print(f"任务{id}开始")
+        await asyncio.sleep(1)
+        print(f"任务{id}结束")
+
+async def main2():
+    sem = asyncio.Semaphore(3)  # 最多3个并发
+    tasks = [limited_fetch(sem, i) for i in range(10)]
+    await asyncio.gather(*tasks)
+
+# ── 超时控制 ──────────────────────────────
+async def slow_op():
+    await asyncio.sleep(5)
+    return "结果"
+
+async def with_timeout():
+    try:
+        result = await asyncio.wait_for(slow_op(), timeout=2.0)
+    except asyncio.TimeoutError:
+        print("超时了！")       # 2秒后触发
+    
+asyncio.run(with_timeout())`
+    },
+    {
+      level:'中级', title:'异步 Queue — 生产者消费者模式',
+      desc:'asyncio.Queue用于协程间通信，实现生产者-消费者模式，处理数据流。',
+      code:
+`import asyncio, random
+
+async def producer(queue, id, count):
+    """生产者：生产count个任务放入队列"""
+    for i in range(count):
+        item = f"P{id}-任务{i}"
+        await queue.put(item)
+        print(f"生产: {item}")
+        await asyncio.sleep(random.uniform(0.1, 0.3))
+    print(f"生产者{id}完成")
+
+async def consumer(queue, id):
+    """消费者：持续从队列取任务处理"""
+    while True:
+        try:
+            item = await asyncio.wait_for(
+                queue.get(), timeout=1.0
+            )
+            print(f"消费者{id}处理: {item}")
+            await asyncio.sleep(random.uniform(0.2, 0.5))
+            queue.task_done()       # 标记任务完成
+        except asyncio.TimeoutError:
+            print(f"消费者{id}：队列超时，退出")
+            break
+
+async def main():
+    queue = asyncio.Queue(maxsize=5)  # 最多5个待处理项
+
+    # 启动2个生产者，3个消费者
+    producers = [
+        asyncio.create_task(producer(queue, i, 5))
+        for i in range(2)
+    ]
+    consumers = [
+        asyncio.create_task(consumer(queue, i))
+        for i in range(3)
+    ]
+
+    # 等生产者完成
+    await asyncio.gather(*producers)
+    print("所有生产者完成")
+
+    # 等队列清空
+    await queue.join()
+    print("队列已清空")
+
+    # 取消消费者
+    for c in consumers:
+        c.cancel()
+
+asyncio.run(main())`
+    },
+    {
+      level:'进阶', title:'异步上下文管理器与异步迭代器',
+      desc:'async with 和 async for 是异步编程的高级特性，用于管理异步资源和异步数据流。',
+      code:
+`import asyncio
+
+# ── 异步上下文管理器 ──────────────────────
+class AsyncDBConnection:
+    """模拟异步数据库连接"""
+    def __init__(self, db_url):
+        self.db_url = db_url
+        self.conn = None
+
+    async def __aenter__(self):     # 异步enter
+        print(f"连接数据库: {self.db_url}")
+        await asyncio.sleep(0.1)    # 模拟连接延迟
+        self.conn = f"conn_{id(self)}"
+        return self                 # 返回给 as 接收
+
+    async def __aexit__(self, *args): # 异步exit
+        print("断开数据库连接")
+        await asyncio.sleep(0.05)
+        self.conn = None
+
+    async def query(self, sql):
+        await asyncio.sleep(0.1)
+        return f"[{self.conn}] {sql} 的结果"
+
+async def use_db():
+    async with AsyncDBConnection("postgresql://...") as db:
+        result = await db.query("SELECT * FROM users")
+        print(result)
+    # 退出with块时自动调用__aexit__
+
+asyncio.run(use_db())
+
+# ── 异步迭代器 ────────────────────────────
+class AsyncRange:
+    """异步版range，模拟从网络逐个获取数据"""
+    def __init__(self, n):
+        self.n = n
+        self.i = 0
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        if self.i >= self.n:
+            raise StopAsyncIteration
+        await asyncio.sleep(0.01)   # 模拟异步操作
+        val = self.i
+        self.i += 1
+        return val
+
+async def consume_async():
+    async for item in AsyncRange(5):   # 异步for
+        print(item, end=' ')            # 0 1 2 3 4
+
+    # 异步生成器（更简洁）
+    async def async_gen(n):
+        for i in range(n):
+            await asyncio.sleep(0.01)
+            yield i
+
+    result = [x async for x in async_gen(5)]  # 异步推导式
+    print(result)
+
+asyncio.run(consume_async())`
+    },
+  ],
+  definition: '异步编程通过事件循环在单线程中实现并发——不阻塞等待I/O，而是注册回调/挂起协程，事件就绪后恢复执行。',
+  principle: 'asyncio的事件循环是核心：维护就绪队列和等待队列。await暂停当前协程，控制权还给事件循环。协程是升级版生成器（基于yield from）。GIL使Python多线程不能并行CPU密集任务，但不影响I/O并发。',
+  deepLogic: ['async def → 定义协程函数（不立即执行）','await → 挂起当前协程，事件循环接管','事件循环 = 不断检查"谁准备好了"的调度器','asyncio.gather()并发运行多协程'],
+  visual: { title:'🧠 空间化记忆：餐厅服务员模型', metaphor:'同步是一个服务员只服务一桌，等菜期间发呆。异步是一个服务员服务10桌——点完菜立刻去下一桌，厨房好了（I/O就绪）再回来上菜。事件循环是服务员的大脑，await是"这桌点完了，先去别桌"。', scene:'🍽️餐厅(事件循环) → 🧑‍🍳服务员(单线程) → ⏳等菜(await) → 📋多桌并发(协程)' },
+  practice: ['用asyncio同时抓取10个URL，对比同步版本速度','实现async生产者-消费者：asyncio.Queue','探索asyncio.gather vs asyncio.wait的区别'],
+  quizzes: [
+    { diff:'基础', q:'直接调用async函数 hello() 会发生什么？正确方式是什么？', a:'直接调用只返回协程对象，不执行函数体，还会产生"coroutine was never awaited"警告。要用asyncio.run(hello())或在async函数内await hello()。', code:'import asyncio\nasync def hello(): print("Hello")\nasyncio.run(hello())  # 正确' },
+    { diff:'基础', q:'asyncio.sleep(1)和time.sleep(1)在async函数里有什么区别？', a:'time.sleep(1)阻塞整个程序1秒，事件循环被卡死，其他协程无法运行。asyncio.sleep(1)让当前协程暂停1秒但让出控制权，事件循环可以去运行其他协程。在async函数里必须用asyncio.sleep。', code:'' },
+    { diff:'进阶', q:'asyncio.gather()和asyncio.create_task()有什么区别？各自适合什么场景？', a:'gather是"启动多个协程并等待所有完成"，适合需要收集所有结果的场景。create_task是"立刻在后台启动一个协程"，适合启动后不需要立刻等待的后台任务。', code:'# gather：需要所有结果\nresults = await asyncio.gather(f1(), f2())\n\n# create_task：后台运行，稍后才等\ntask = asyncio.create_task(f1())\n# 做其他事...\nresult = await task' },
+    { diff:'思考', q:'Python有GIL（全局解释器锁），这对asyncio有影响吗？asyncio、多线程、多进程各适合什么场景？', a:'GIL对asyncio几乎没影响，因为asyncio是单线程的，GIL不是问题。asyncio适合I/O密集型（网络请求、文件操作）；多线程也适合I/O密集型但有GIL限制了CPU并行；多进程适合CPU密集型（图像处理、机器学习），每个进程有自己的GIL。', code:'' },
+    { diff:'基础', q:'用 <code>async with</code> 和 <code>asyncio.timeout()</code> 实现：如果任务超过2秒未完成就取消并打印超时。', a:'async with是异步上下文管理器语法，asyncio.timeout(seconds)在超时时抛出TimeoutError。用try-except捕获处理。', code:'import asyncio\nasync def slow_task():\n    await asyncio.sleep(5)\n    return "完成"\n\nasync def main():\n    try:\n        async with asyncio.timeout(2):\n            result = await slow_task()\n    except TimeoutError:\n        print("任务超时！")\n\nasyncio.run(main())  # 任务超时！' },
+    { diff:'基础', q:'<code>asyncio.gather(f1(), f2(), f3())</code> 的返回值是什么结构？其中一个抛出异常时其他的会怎样？', a:'返回列表，顺序与输入相同。默认情况下一个抛出异常，gather会立刻抛出，其他协程可能还在运行但结果被丢弃。用return_exceptions=True可以让异常被当作结果收集，不中断其他协程。', code:'async def ok(): return 1\nasync def fail(): raise ValueError("出错")\n\nasync def main():\n    # return_exceptions=True：异常作为结果返回\n    results = await asyncio.gather(ok(), fail(), ok(),\n                                   return_exceptions=True)\n    print(results)  # [1, ValueError("出错"), 1]\nasyncio.run(main())' },
+    { diff:'进阶', q:'<code>asyncio.Semaphore</code> 是什么？用它实现并发请求数量限制（同时最多3个）。', a:'Semaphore（信号量）限制并发数量的计数器。async with sem时内部计数-1，退出时+1，计数为0则等待。用于防止同时发出过多请求压垮服务器。', code:'import asyncio\nasync def fetch(sem, i):\n    async with sem:\n        print(f"开始 {i}")\n        await asyncio.sleep(1)\n        return i\n\nasync def main():\n    sem = asyncio.Semaphore(3)  # 最多3个并发\n    tasks = [fetch(sem, i) for i in range(10)]\n    results = await asyncio.gather(*tasks)\n    print(results)\nasyncio.run(main())' },
+    { diff:'进阶', q:'实现异步生产者-消费者模式：生产者每0.5秒往队列放一个数字，2个消费者并发取出处理。', a:'asyncio.Queue是异步安全的队列，put/get都需要await。多个消费者并发运行，await queue.get()会自动等待数据。', code:'import asyncio\nasync def producer(q):\n    for i in range(6):\n        await q.put(i)\n        await asyncio.sleep(0.5)\n    await q.put(None)  # 结束信号\n    await q.put(None)\n\nasync def consumer(q, cid):\n    while True:\n        item = await q.get()\n        if item is None: break\n        print(f"消费者{cid}处理: {item}")\n\nasync def main():\n    q = asyncio.Queue()\n    await asyncio.gather(producer(q),consumer(q,1),consumer(q,2))\nasyncio.run(main())' },
+  ]
+},
+// ════════════════════════════════════════════════════════════════ MODULE 8
+{
+  id:8, emoji:'🔮', title:'元编程', subtitle:'代码编写代码的魔法', color:'#8B5CF6',
+  concept: {
+    intro:'普通编程是用代码解决问题。元编程是让代码能"理解和修改自身"——在运行时检查类有哪些方法、动态创建新类、拦截属性访问时执行自定义逻辑。很多框架（如Django、SQLAlchemy）都大量使用元编程。',
+    analogy: { title:'🎬 生活类比：电影与拍电影', text:'普通编程是拍电影——按照剧本（代码）演出故事。元编程是研究拍电影的方法——摄像机如何运作，如何改变摄制规则让所有演员自动做某些事。__getattr__像"当演员没有这个动作时，导演自动即兴发挥"的机制。元类像"重写演员培训手册"，影响之后创建的所有演员（类）。' },
+    keywords: ['type()','元类metaclass','__new__','__getattr__','__setattr__','__getattribute__','描述符descriptor','inspect模块','exec/eval','动态创建类'],
+    steps: [
+      { text:'<strong>type()的双重身份：</strong>type(x)查看类型；type("类名",(父类,),{方法字典})动态创建一个类。所有类的创建背后都是type在工作。' },
+      { text:'<strong>__getattr__和__setattr__：</strong>__getattr__在访问不存在的属性时触发；__setattr__在设置任何属性时触发。通过重写它们，可以拦截和自定义属性访问行为。' },
+      { text:'<strong>描述符协议：</strong>如果对象定义了__get__、__set__或__delete__方法，它就是描述符。当它作为类属性时，访问这个属性会触发这些方法。@property基于此实现。' },
+      { text:'<strong>元类：</strong>类的类，默认是type。可以通过metaclass参数指定自定义元类，在"类被创建时"插入自定义逻辑，如自动注册子类、添加方法等。' }
+    ],
+    warn:'<strong>使用建议：</strong>元编程是强大的工具，但也增加了代码复杂度。日常业务代码尽量少用元编程，它更适合框架开发、ORM、插件系统等基础设施层。先掌握前7个模块，再来学元编程。'
+  },
+  codeExamples: [
+    {
+      level:'基础', title:'type() 动态创建类与内省',
+      desc:'type()是Python中最基础的元编程工具。理解它既是类型检查函数，又是创建类的工厂函数。',
+      code:
+`# ── type() 的双重身份 ─────────────────────
+print(type(42))           # <class 'int'>
+print(type("hello"))      # <class 'str'>
+print(type([]))           # <class 'list'>
+
+class Dog: pass
+print(type(Dog))          # <class 'type'>  ← 类本身是type的实例！
+print(type(Dog()))        # <class '__main__.Dog'>
+
+# ── 动态创建类（不用class关键字）────────────
+# type('类名', (父类元组), {属性和方法字典})
+def bark(self):
+    return f"{self.name}：汪汪！"
+
+def introduce(self):
+    return f"我叫{self.name}，{self.age}岁"
+
+Dog = type('Dog', (object,), {
+    'sound': '汪',                  # 类属性
+    'bark': bark,                   # 方法
+    'introduce': introduce,
+})
+
+d = Dog()
+d.name = '旺财'
+d.age = 3
+print(d.bark())           # 旺财：汪汪！
+print(Dog.sound)          # 汪
+
+# ── 内省：运行时查看对象信息 ───────────────
+import inspect
+
+class MyClass:
+    class_var = 42
+    def method(self): pass
+    def another(self): pass
+
+obj = MyClass()
+
+# 查看所有属性和方法
+print(dir(obj))                     # 所有属性名列表
+print(vars(obj))                    # 实例的__dict__
+print(vars(MyClass))                # 类的__dict__
+
+# 检查属性是否存在
+print(hasattr(obj, 'method'))       # True
+print(hasattr(obj, 'missing'))      # False
+
+# 动态获取和设置属性
+print(getattr(obj, 'class_var'))    # 42
+setattr(obj, 'new_attr', 'hello')
+print(obj.new_attr)                 # hello
+delattr(obj, 'new_attr')
+
+# 查看方法来源
+print(inspect.ismethod(obj.method)) # True
+print(inspect.getsource(MyClass))   # 源代码字符串`
+    },
+    {
+      level:'中级', title:'__getattr__ / __setattr__ / __getattribute__',
+      desc:'通过重写这三个魔法方法，拦截属性的读取和写入，实现代理、验证、延迟加载等功能。',
+      code:
+`# ── __getattr__：找不到属性时触发 ─────────
+class FlexObject:
+    def __getattr__(self, name):
+        # 只在找不到属性时调用
+        return f"属性'{name}'不存在，返回默认值"
+
+obj = FlexObject()
+obj.x = 10
+print(obj.x)          # 10（正常访问，不触发__getattr__）
+print(obj.y)          # 属性'y'不存在，返回默认值
+
+# ── __setattr__：设置任何属性时触发 ─────────
+class Validated:
+    def __setattr__(self, name, value):
+        if name == 'age' and not isinstance(value, int):
+            raise TypeError("age必须是整数")
+        if name == 'age' and value < 0:
+            raise ValueError("age不能为负数")
+        super().__setattr__(name, value)  # 正常设置
+
+v = Validated()
+v.age = 25            # 正常
+v.name = "Alice"      # 正常
+# v.age = "二十五"    # TypeError！
+# v.age = -1          # ValueError！
+
+# ── __getattribute__：所有属性访问都触发 ────
+class Logged:
+    def __init__(self, x):
+        # __getattribute__只拦截读取，不拦截写入
+        # 所以self.x = x 在__init__里是安全的，不会触发死递归
+        self.x = x
+        self._access_log = []
+
+    def __getattribute__(self, name):
+        # 死递归的危险在这里：若直接写 self._access_log 就会
+        # 无限触发__getattribute__自身，必须用super()绕开
+        log = super().__getattribute__('_access_log')
+        if not name.startswith('_'):
+            log.append(name)
+        return super().__getattribute__(name)
+
+    def get_log(self):
+        return self._access_log
+
+obj = Logged(42)
+_ = obj.x
+_ = obj.x
+_ = obj.x
+print(obj.get_log())  # ['x', 'x', 'x']
+
+# ── 实际应用：属性委托代理 ────────────────
+class Proxy:
+    def __init__(self, target):
+        object.__setattr__(self, '_target', target)
+
+    def __getattr__(self, name):
+        return getattr(self._target, name)  # 委托给target
+
+    def __setattr__(self, name, value):
+        setattr(self._target, name, value)
+
+class Real:
+    def __init__(self):
+        self.value = 0
+    def increment(self):
+        self.value += 1
+
+real = Real()
+proxy = Proxy(real)
+proxy.increment()
+print(proxy.value)    # 1（通过代理访问real的属性）`
+    },
+    {
+      level:'中级', title:'描述符协议 — property 的底层实现',
+      desc:'描述符是Python属性访问系统的基础，理解它就理解了@property、classmethod、staticmethod的工作原理。',
+      code:
+`# ── 什么是描述符 ──────────────────────────
+# 实现了__get__、__set__、__delete__之一的对象
+class Descriptor:
+    def __get__(self, obj, objtype=None):
+        print(f"__get__ 被调用, obj={obj}, type={objtype}")
+        return 42
+
+    def __set__(self, obj, value):
+        print(f"__set__ 被调用, value={value}")
+
+    def __delete__(self, obj):
+        print("__delete__ 被调用")
+
+class MyClass:
+    attr = Descriptor()     # 描述符作为类属性
+
+obj = MyClass()
+_ = obj.attr                # 触发__get__
+obj.attr = 100              # 触发__set__
+del obj.attr                # 触发__delete__
+
+# ── 自己实现 @property ────────────────────
+class MyProperty:
+    def __init__(self, getter):
+        self.getter = getter
+        self.setter_func = None
+
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self         # 通过类访问时返回描述符本身
+        return self.getter(obj)
+
+    def __set__(self, obj, value):
+        if self.setter_func is None:
+            raise AttributeError("只读属性")
+        self.setter_func(obj, value)
+
+    def setter(self, func):     # 模拟@xxx.setter
+        self.setter_func = func
+        return self
+
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @MyProperty                 # 等同于原生@property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("半径不能为负")
+        self._radius = value
+
+    @MyProperty
+    def area(self):
+        return 3.14 * self._radius ** 2
+
+c = Circle(5)
+print(c.radius)    # 5
+print(c.area)      # 78.5
+c.radius = 10
+print(c.area)      # 314.0
+
+# ── 带类型验证的描述符 ────────────────────
+class TypedField:
+    def __init__(self, name, expected_type):
+        self.name = name
+        self.expected_type = expected_type
+
+    def __set_name__(self, owner, name):    # Python3.6+
+        self.name = name
+
+    def __get__(self, obj, objtype=None):
+        if obj is None: return self
+        return obj.__dict__.get(self.name)
+
+    def __set__(self, obj, value):
+        if not isinstance(value, self.expected_type):
+            raise TypeError(f"{self.name}必须是{self.expected_type}")
+        obj.__dict__[self.name] = value
+
+class Person:
+    name  = TypedField('name', str)
+    age   = TypedField('age', int)
+
+p = Person()
+p.name = "Alice"   # OK
+p.age  = 25        # OK
+# p.age = "二十五" # TypeError！`
+    },
+    {
+      level:'进阶', title:'元类 metaclass — 控制类的创建',
+      desc:'元类是"创建类的类"。通过自定义元类，可以在类定义时自动执行代码，如注册子类、自动添加方法、强制接口等。',
+      code:
+`# ── 元类基础：type是所有类的元类 ────────────
+print(type(int))      # <class 'type'>
+print(type(list))     # <class 'type'>
+print(type(type))     # <class 'type'>  ← type是自己的元类！
+
+# ── 自定义元类 ────────────────────────────
+class Meta(type):
+    def __new__(mcs, name, bases, namespace):
+        print(f"正在创建类: {name}")
+        # 在这里可以修改namespace（类的属性字典）
+        cls = super().__new__(mcs, name, bases, namespace)
+        return cls
+
+class MyClass(metaclass=Meta):  # 定义MyClass时触发Meta.__new__
+    pass
+# 输出：正在创建类: MyClass
+
+# ── 实际应用1：自动注册所有子类（插件系统）──
+class PluginMeta(type):
+    registry = {}
+
+    def __new__(mcs, name, bases, namespace):
+        cls = super().__new__(mcs, name, bases, namespace)
+        if bases:                   # 不注册基类本身
+            mcs.registry[name] = cls
+        return cls
+
+class Plugin(metaclass=PluginMeta):
+    def run(self): pass
+
+class PDFPlugin(Plugin):
+    def run(self): return "处理PDF"
+
+class ImagePlugin(Plugin):
+    def run(self): return "处理图片"
+
+print(PluginMeta.registry)
+# {'PDFPlugin': <class PDFPlugin>, 'ImagePlugin': <class ImagePlugin>}
+print(PluginMeta.registry['PDFPlugin']().run())  # 处理PDF
+
+# ── 实际应用2：单例模式 ───────────────────
+class SingletonMeta(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super().__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class Database(metaclass=SingletonMeta):
+    def __init__(self):
+        print("创建数据库连接")
+
+db1 = Database()    # 创建数据库连接
+db2 = Database()    # 不打印（返回已有实例）
+print(db1 is db2)   # True`
+    },
+    {
+      level:'进阶', title:'exec / eval / compile — 动态执行代码',
+      desc:'Python可以在运行时生成并执行代码字符串。eval执行表达式，exec执行语句，compile预编译。慎用，但了解它们有助于理解Python的动态性。',
+      code:
+`# ── eval：执行表达式，返回结果 ───────────
+result = eval("2 + 3 * 4")
+print(result)               # 14
+
+x = 10
+result = eval("x * 2 + 1") # 可以访问当前变量
+print(result)               # 21
+
+# 限制访问的命名空间（安全沙箱）
+safe_result = eval("2 ** 10", {"__builtins__": {}}, {})
+print(safe_result)          # 1024
+
+# ── exec：执行语句（无返回值）─────────────
+code = """
+def greet(name):
+    return f"Hello, {name}!"
+
+result = greet("World")
+"""
+namespace = {}
+exec(code, namespace)
+print(namespace['result'])  # Hello, World!
+print(namespace['greet']("Python"))  # Hello, Python!
+
+# ── 动态创建函数 ──────────────────────────
+def make_function(name, body):
+    code = f"def {name}(x):\n    return {body}"
+    namespace = {}
+    exec(code, namespace)
+    return namespace[name]
+
+double = make_function("double", "x * 2")
+square = make_function("square", "x ** 2")
+print(double(5))    # 10
+print(square(4))    # 16
+
+# ── compile：预编译（性能优化）────────────
+# 如果同一段代码要多次执行，先compile
+code_str = "x ** 2 + 2 * x + 1"
+compiled = compile(code_str, "<string>", "eval")
+
+results = []
+for x in range(10):
+    results.append(eval(compiled))  # 比eval字符串快
+print(results)
+
+# ── 查看函数的字节码 ──────────────────────
+import dis
+
+def simple(x):
+    return x * 2 + 1
+
+dis.dis(simple)     # 显示字节码指令，理解Python底层`
+    },
+  ],
+  definition: '元编程是在运行时检查、修改、生成代码结构的技术。Python通过元类、描述符、__getattr__等机制实现代码对自身的操控。',
+  principle: 'type是所有类的类（元类）。__new__在class定义时被元类调用。描述符协议(__get__/__set__/__delete__)是property、classmethod、staticmethod的基础。exec/eval在运行时执行动态代码。',
+  deepLogic: ['class Dog: ... → type("Dog", bases, dict) 的语法糖','元类 = 创建类的工厂 = 类的类','描述符让属性访问变成方法调用','__getattr__只在找不到属性时触发（钩子）'],
+  visual: { title:'🧠 空间化记忆：上帝视角与造物主', metaphor:'普通编程是在世界里造房子。元编程是修改物理法则（造房子的规则）。type是造世界的上帝，class是规则，对象是按规则运行的世界。元类是"上帝的设计师"——规划上帝该怎么造东西。描述符是"触发器"——当你碰某个属性，它执行预设逻辑。', scene:'🌌宇宙(type) → ⚖️物理法则(metaclass) → 🌍世界(class) → 🏠房子(instance)' },
+  practice: ['用元类实现自动注册所有子类的插件系统','实现@validate描述符，对属性赋值进行类型检查','用__getattr__实现链式调用：obj.x.y.z的动态路径'],
+  quizzes: [
+    { diff:'基础', q:'用type()动态创建一个Person类，有name属性和greet方法（不用class关键字）。', a:'type("类名",(父类元组),{属性和方法字典})，方法是普通函数，第一个参数是self。', code:'def greet(self): print(f"你好，我是{self.name}")\nPerson = type("Person",(object,),{"greet":greet})\np = Person(); p.name="小明"; p.greet()' },
+    { diff:'基础', q:'__getattr__和__getattribute__有什么区别？哪个危险？', a:'__getattr__只在属性不存在时触发（兜底）。__getattribute__在每次访问任何属性时都触发，重写它很危险，容易造成无限递归（访问属性→触发__getattribute__→又访问属性→...）。一般只重写__getattr__，必须重写__getattribute__时要用super().__getattribute__()。', code:'' },
+    { diff:'进阶', q:'用元类SingletonMeta实现单例模式，让同一个类无论实例化多少次都返回同一个对象。', a:'在元类的__call__方法里判断是否已有实例，有就返回旧的，没有才创建新的并存入字典。', code:'class SingletonMeta(type):\n    _instances = {}\n    def __call__(cls, *args, **kwargs):\n        if cls not in cls._instances:\n            cls._instances[cls] = super().__call__(*args, **kwargs)\n        return cls._instances[cls]' },
+    { diff:'思考', q:'描述符的__get__方法接收obj和objtype两个参数，为什么当通过类访问时obj是None？这有什么用？', a:'通过实例访问：obj是实例，objtype是类。通过类访问：obj是None，objtype是类。这让描述符可以区分两种访问：通过类访问时可以返回描述符自身（比如@classmethod这样做），通过实例访问时返回计算值。这是实现很多Python特性的基础。', code:'class Desc:\n    def __get__(self, obj, objtype):\n        if obj is None:  # 通过类访问\n            return self  # 返回描述符本身\n        return "实例值"  # 通过实例访问' },
+    { diff:'基础', q:'用 inspect 模块获取一个函数的参数名列表和默认值，写一个打印函数签名信息的工具函数。', a:'inspect.signature()获取签名对象；.parameters是有序字典，key是参数名，value含default、kind等信息。这是很多框架（FastAPI、pytest）实现依赖注入的基础。', code:'import inspect\ndef describe(func):\n    sig = inspect.signature(func)\n    for name, param in sig.parameters.items():\n        d = param.default\n        d_str = f" = {d}" if d is not inspect.Parameter.empty else ""\n        print(f"  {name}{d_str}")\n\ndef greet(name, greeting="你好", times=1): pass\ndescribe(greet)\n# name\n# greeting = 你好\n# times = 1' },
+    { diff:'基础', q:'<code>eval()</code> 和 <code>exec()</code> 有什么区别？各自的返回值是什么？为什么说它们有安全风险？', a:'eval计算并返回一个表达式的值，只能是表达式（如"1+2"）。exec执行任意代码语句，返回None。安全风险：如果字符串来自用户输入，可以执行任意Python代码（删文件、发请求等）。绝不要对不可信输入使用eval/exec。', code:'result = eval("2 ** 10")\nprint(result)   # 1024\n\nexec("x = 100; print(x)")  # 100\n\n# 危险示例（不要在真实代码里这样用）：\n# user_input = "__import__(\x27os\x27).system(\x27rm -rf /\x27)"\n# eval(user_input)  # 极度危险！' },
+    { diff:'进阶', q:'用 <code>__init_subclass__</code> 实现自动注册所有子类，不需要手动维护注册表。', a:'__init_subclass__在每次有类继承它时自动被调用，cls参数是新的子类。比元类更轻量，Python 3.6+推荐用这个替代简单的元类需求。', code:'class Plugin:\n    _registry = {}\n    def __init_subclass__(cls, name=None, **kw):\n        super().__init_subclass__(**kw)\n        Plugin._registry[name or cls.__name__] = cls\n\nclass JSONPlugin(Plugin, name="json"): pass\nclass CSVPlugin(Plugin, name="csv"): pass\n\nprint(Plugin._registry)\n# {"json": JSONPlugin, "csv": CSVPlugin}\n# 每新增子类自动注册，无需手动操作' },
+    { diff:'进阶', q:'实现一个 <code>TypedAttr</code> 描述符，使得赋值时自动检查类型，类型错误则抛出 TypeError。', a:'描述符需要实现__set_name__（获取属性名）、__get__（读取）、__set__（写入时验证类型）。用实例的__dict__存值避免循环调用。', code:'class TypedAttr:\n    def __set_name__(self, owner, name):\n        self.name = name\n    def __init__(self, expected_type):\n        self.type = expected_type\n    def __get__(self, obj, objtype=None):\n        if obj is None: return self\n        return obj.__dict__.get(self.name)\n    def __set__(self, obj, value):\n        if not isinstance(value, self.type):\n            raise TypeError(f"{self.name}必须是{self.type.__name__}")\n        obj.__dict__[self.name] = value\n\nclass Person:\n    name = TypedAttr(str)\n    age  = TypedAttr(int)\np = Person()\np.name = "小明"  # OK\np.age  = "18"   # TypeError！' },
+  ]
+},
+];  // end modules array
+
+// ─── Neuro Tips ──────────────────────────────────────────────────────────────
+const neuroTips = [
+  { icon:'💤', tip:'学后睡眠巩固', desc:'每学完一个模块后的睡眠会将海马体中的临时记忆转化为皮层的长期记忆。学完练习后当天晚上保证7-8小时睡眠。' },
+  { icon:'🔄', tip:'间隔重复激活', desc:'遵循艾宾浩斯曲线：1天后、3天后、7天后、14天后各复习一次。每次复习不要重读，而是尝试回忆（检索练习效应）。' },
+  { icon:'✋', tip:'手写空间编码', desc:'用手画出每个知识点的空间隐喻图（不是文字笔记）。手写激活小脑，空间绘图激活右脑视觉皮层，双重编码强化神经链接。' },
+  { icon:'🗣️', tip:'费曼输出技术', desc:'学完每个模块，用最简单的语言向"虚拟的10岁孩子"解释。无法解释=理解有漏洞。解释过程触发前额叶主动重构，最高效的记忆方式。' },
+  { icon:'🎯', tip:'错误驱动学习', desc:'刻意让自己犯错：先猜答案，再验证。错误时的认知冲突释放多巴胺和去甲肾上腺素，这两种神经递质是强化突触的关键。' },
+  { icon:'🌊', tip:'心流状态编程', desc:'找到恰好在能力边界+15%难度的练习。过难→焦虑，过易→无聊。心流状态下大脑默认模式网络关闭，工作记忆全力运转，学习效率最高。' }
+];
+
+// ─── State ───────────────────────────────────────────────────────────────────
+let activeModule = null;
+let activeTab = 'concept';
+const openQuizzes = new Set();
+
+// ─── Render ──────────────────────────────────────────────────────────────────
+function renderModules() {
+  document.getElementById('moduleGrid').innerHTML = modules.map(m => `
+    <button class="module-card ${activeModule===m.id?'active':''}"
+      style="border-color:${activeModule===m.id?m.color+'55':'#1E293B'};
+             background:${activeModule===m.id?`linear-gradient(135deg,${m.color}1A,${m.color}08)`:'linear-gradient(135deg,#0F172A,#0A0F1E)'};
+             box-shadow:${activeModule===m.id?`0 0 28px ${m.color}1A`:'none'}"
+      onclick="toggleModule(${m.id})">
+      <div class="card-emoji">${m.emoji}</div>
+      <div class="card-num" style="color:${m.color}">MODULE ${String(m.id).padStart(2,'0')}</div>
+      <div class="card-title">${m.title}</div>
+      <div class="card-subtitle">${m.subtitle}</div>
+      <div class="card-bar" style="background:linear-gradient(90deg,${m.color},transparent);opacity:${activeModule===m.id?1:0.3}"></div>
+    </button>`).join('');
+}
+
+function renderDetail() {
+  const panel = document.getElementById('detailPanel');
+  if (!activeModule) { panel.className='detail-panel'; panel.innerHTML=''; return; }
+  const m = modules.find(x=>x.id===activeModule);
+  const lc = ['#10B981','#F59E0B','#EF4444'];
+  const ll = ['理解验证','深度探索','创造应用'];
+  const lcode = ['L1','L2','L3'];
+  const dc = {'基础':'#10B981','进阶':'#F59E0B','思考':'#EF4444'};
+
+  panel.setAttribute('style',`border:1px solid ${m.color}44;background:linear-gradient(135deg,#0F172A,#080D18);box-shadow:0 0 50px ${m.color}11;`);
+  panel.className='detail-panel open';
+
+  const tabs=[['concept','💡 概念'],['examples','📟 代码示例'],['deep','🔬 深度原理'],['visual','🧠 空间记忆'],['practice','⚡ 练习']];
+
+  panel.innerHTML=`
+    <div class="panel-header" style="background:linear-gradient(135deg,${m.color}12,transparent)">
+      <div class="panel-header-inner">
+        <span class="panel-emoji">${m.emoji}</span>
+        <div>
+          <div class="panel-label" style="color:${m.color}">DEEP ANALYSIS</div>
+          <div class="panel-title">${m.title}</div>
+        </div>
+      </div>
+      <div class="tabs">
+        ${tabs.map(([id,label])=>`
+          <button class="tab-btn ${activeTab===id?'active':''}"
+            style="border-color:${activeTab===id?m.color:'#1E293B'};color:${activeTab===id?m.color:'#64748B'};background:${activeTab===id?m.color+'22':'transparent'}"
+            onclick="setTab('${id}')">${label}</button>`).join('')}
+      </div>
+    </div>
+
+    <!-- CONCEPT TAB -->
+    <div class="tab-content ${activeTab==='concept'?'active':''}" id="tab-concept">
+      <div class="section-label" style="color:${m.color}">WHAT IS IT — 它到底是什么</div>
+      <div class="concept-intro">${m.concept.intro}</div>
+      <div class="section-label" style="color:${m.color}">ANALOGY — 生活类比</div>
+      <div class="concept-analogy" style="background:${m.color}11;border:1px solid ${m.color}33">
+        <div class="concept-analogy-title">${m.concept.analogy.title}</div>
+        <div class="concept-analogy-text">${m.concept.analogy.text}</div>
+      </div>
+      <div class="section-label" style="color:${m.color}">KEY TERMS — 核心词汇</div>
+      <div class="concept-keywords">${m.concept.keywords.map(k=>`<span class="keyword-tag" style="background:${m.color}18;color:${m.color};border:1px solid ${m.color}33">${k}</span>`).join('')}</div>
+      <div class="section-label" style="color:${m.color}">STEP BY STEP — 逐步拆解</div>
+      <div class="concept-steps">${m.concept.steps.map((s,i)=>`
+        <div class="concept-step">
+          <div class="concept-step-num" style="background:${m.color}22;color:${m.color}">${i+1}</div>
+          <div class="concept-step-text">${s.text}</div>
+        </div>`).join('')}</div>
+      <div class="concept-warn">${m.concept.warn}</div>
+    </div>
+
+    <!-- CODE EXAMPLES TAB -->
+    <div class="tab-content ${activeTab==='examples'?'active':''}" id="tab-examples">
+      <div class="section-label" style="color:${m.color}">CODE EXAMPLES — 从所有用法深度拆解</div>
+      ${m.codeExamples.map((ex,i)=>{
+        const bgs={'基础':'#10B98122','中级':'#F59E0B22','进阶':'#EF444422','高级':'#8B5CF622'};
+        const tcs={'基础':'#10B981','中级':'#F59E0B','进阶':'#EF4444','高级':'#8B5CF6'};
+        const bg = bgs[ex.level]||'#94A3B822';
+        const tc = tcs[ex.level]||'#94A3B8';
+        return `
+        <div class="code-example-block">
+          <div class="code-example-header">
+            <span class="code-example-badge" style="background:${bg};color:${tc}">${ex.level}</span>
+            <span class="code-example-title">示例${i+1}：${ex.title}</span>
+          </div>
+          <div class="code-example-desc">${ex.desc}</div>
+          <div class="code-block"><pre>${c(ex.code)}</pre></div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- DEEP TAB -->
+    <div class="tab-content ${activeTab==='deep'?'active':''}" id="tab-deep">
+      <div class="section-label" style="color:${m.color}">DEFINITION</div>
+      <div class="definition-box" style="border-left:3px solid ${m.color}">${m.definition}</div>
+      <div class="section-label" style="color:${m.color}">PRINCIPLE</div>
+      <div class="principle-text">${m.principle}</div>
+      <div class="section-label" style="color:${m.color}">BOTTOM-UP LOGIC</div>
+      ${m.deepLogic.map((item,i)=>`
+        <div class="logic-item">
+          <span class="logic-num" style="color:${m.color}">${String(i+1).padStart(2,'0')}</span>
+          <code class="logic-text">${item}</code>
+        </div>`).join('')}
+    </div>
+
+    <!-- VISUAL TAB -->
+    <div class="tab-content ${activeTab==='visual'?'active':''}" id="tab-visual">
+      <div class="visual-box" style="background:radial-gradient(ellipse at 30% 30%,${m.color}15,transparent 60%),#080D18;border:1px solid ${m.color}33">
+        <div class="section-label" style="color:${m.color}">${m.visual.title}</div>
+        <div class="visual-metaphor">${m.visual.metaphor}</div>
+        <div class="visual-scene">${m.visual.scene}</div>
+      </div>
+      <div class="neuro-tip">
+        <div class="neuro-label">🧠 脑科学建议</div>
+        <div class="neuro-text">阅读完隐喻后，<strong style="color:#F1F5F9">立刻闭眼30秒</strong>，在大脑中构建这个场景的三维图像。然后<strong style="color:#F1F5F9">手绘这个场景</strong>（哪怕很丑），视觉-运动双重编码将激活更多皮层区域，显著增强记忆留存。</div>
+      </div>
+    </div>
+
+    <!-- PRACTICE TAB -->
+    <div class="tab-content ${activeTab==='practice'?'active':''}" id="tab-practice">
+      <div class="section-label" style="color:${m.color}">DELIBERATE PRACTICE — 刻意练习三阶梯</div>
+      ${m.practice.map((item,i)=>`
+        <div class="practice-item" style="border:1px solid ${lc[i]}33">
+          <div class="practice-badge" style="background:${lc[i]}22;color:${lc[i]}">${lcode[i]}</div>
+          <div>
+            <div class="practice-level" style="color:${lc[i]}">${ll[i]}</div>
+            <div class="practice-text">${item}</div>
+          </div>
+        </div>`).join('')}
+      <div class="practice-note">💡 <strong style="color:#94A3B8">练习节奏：</strong>L1完成后休息10分钟再做L2。完成全部三关后，次日不看代码，直接从空白文件重写——检索练习比重读效果强3倍。</div>
+      <hr class="quiz-divider">
+      <div class="quiz-header">
+        <span style="font-size:18px">📝</span>
+        <span class="quiz-header-text" style="color:${m.color}">PRACTICE QUESTIONS — 配套练习题（点击展开答案）</span>
+      </div>
+      <div class="quiz-list">
+        ${m.quizzes.map((q,qi)=>{
+          const key=`${m.id}-${qi}`;
+          const isOpen=openQuizzes.has(key);
+          const qdc=dc[q.diff]||'#94A3B8';
+          return `
+          <div class="quiz-item">
+            <div class="quiz-q" onclick="toggleQuiz('${key}')">
+              <span class="quiz-badge" style="background:${qdc}22;color:${qdc}">${q.diff}</span>
+              <span class="quiz-qtext">Q${qi+1}. ${q.q}</span>
+              <span class="quiz-toggle ${isOpen?'open':''}">▾</span>
+            </div>
+            <div class="quiz-answer ${isOpen?'open':''}">
+              <div class="quiz-answer-label" style="color:${m.color}">ANSWER</div>
+              <div class="quiz-answer-text">${q.a.replace(/\n/g,'<br>')}</div>
+              ${q.code?`<div class="quiz-answer-code">${q.code}</div>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function toggleModule(id) {
+  activeModule = activeModule===id ? null : id;
+  activeTab = 'concept';
+  openQuizzes.clear();
+  renderModules();
+  renderDetail();
+}
+function setTab(tab) { activeTab=tab; renderDetail(); }
+function toggleQuiz(key) {
+  openQuizzes.has(key) ? openQuizzes.delete(key) : openQuizzes.add(key);
+  renderDetail();
+}
+
+function renderNeuro() {
+  document.getElementById('neuroGrid').innerHTML = neuroTips.map(t=>`
+    <div class="neuro-card">
+      <div class="neuro-icon">${t.icon}</div>
+      <div class="neuro-title">${t.tip}</div>
+      <div class="neuro-desc">${t.desc}</div>
+    </div>`).join('');
+  document.getElementById('weekGrid').innerHTML = modules.map((m,i)=>`
+    <div class="week-item" style="border:1px solid ${m.color}33">
+      <div class="week-num" style="color:${m.color}">第${i+1}周</div>
+      <div class="week-name">${m.emoji} ${m.title}</div>
+      <div class="week-time">理论2h · 练习4h · 复习1h</div>
+    </div>`).join('');
+}
+
+renderModules();
+renderNeuro();
+</script>
+</body>
+</html>
